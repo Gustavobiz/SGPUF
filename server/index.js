@@ -1,18 +1,15 @@
 const express = require("express");
-const cors = require("cors");
-const db = require("./config/db");
+const app = express();
 require("dotenv").config();
 
-const app = express();
-app.use(cors());
-app.use(express.json());
+const authRoutes = require("./routes/authRoutes");
+const registerRoutes = require("./routes/registerRoutes");
 
-// Teste de rota
-app.get("/", (req, res) => {
-  res.send("API do SGPUF funcionando!");
-});
+app.use(express.json());
+app.use("/login", authRoutes);
+app.use("/register", registerRoutes);
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
-  console.log(`Servidor rodando na porta ${PORT}`);
+  console.log(`Servidor rodando em http://localhost:${PORT}`);
 });
