@@ -23,12 +23,12 @@ USE `sgpuf_db` ;
 DROP TABLE IF EXISTS `sgpuf_db`.`Funcionário` ;
 
 CREATE TABLE IF NOT EXISTS `sgpuf_db`.`Funcionário` (
-  `idFuncionário` INT NOT NULL,
+  `idFuncionário` INT NOT NULL AUTO_INCREMENT,
   `nome` VARCHAR(45) NOT NULL,
   `endereco` VARCHAR(200) NOT NULL,
   `Email` VARCHAR(45) NOT NULL,
   `Telefone` VARCHAR(45) NULL,
-  `senha` VARCHAR(45) NOT NULL,
+  `senha` VARCHAR(100) NOT NULL,
   PRIMARY KEY (`idFuncionário`),
   UNIQUE INDEX `Email_UNIQUE` (`Email` ASC) VISIBLE)
 ENGINE = InnoDB;
@@ -41,21 +41,15 @@ DROP TABLE IF EXISTS `sgpuf_db`.`Engenheiro` ;
 
 CREATE TABLE IF NOT EXISTS `sgpuf_db`.`Engenheiro` (
   `Funcionário_idFuncionário` INT NOT NULL,
-  `Engenheiro_Funcionário_idFuncionário` INT NOT NULL,
-  INDEX `fk_Engenheiro_Funcionário_idx` (`Funcionário_idFuncionário` ASC) VISIBLE,
   PRIMARY KEY (`Funcionário_idFuncionário`),
-  INDEX `fk_Engenheiro_Engenheiro1_idx` (`Engenheiro_Funcionário_idFuncionário` ASC) VISIBLE,
   CONSTRAINT `fk_Engenheiro_Funcionário`
     FOREIGN KEY (`Funcionário_idFuncionário`)
     REFERENCES `sgpuf_db`.`Funcionário` (`idFuncionário`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Engenheiro_Engenheiro1`
-    FOREIGN KEY (`Engenheiro_Funcionário_idFuncionário`)
-    REFERENCES `sgpuf_db`.`Engenheiro` (`Funcionário_idFuncionário`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
+    ON UPDATE NO ACTION
+)
 ENGINE = InnoDB;
+
 
 
 -- -----------------------------------------------------

@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const bcrypt = require("bcrypt");
-const connection = require("../database/connection");
+const connection = require("../config/db");
 
 // Rota de cadastro
 router.post("/", async (req, res) => {

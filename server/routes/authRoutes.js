@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const connection = require("../database/connection");
+const connection = require("../config/db");
 
 router.post("/login", (req, res) => {
   const { email, senha } = req.body;
@@ -10,7 +10,11 @@ router.post("/login", (req, res) => {
   const query = `SELECT * FROM Funcionário WHERE Email = ?`;
 
   connection.query(query, [email], async (err, results) => {
-    if (err) return res.status(500).json({ error: "Erro no servidor" });
+    if (err) {
+      console.error("Erro ao buscar usuário:", err);
+      return res.status(500).json({ error: "Erro no servidor" });
+    }
+
     if (results.length === 0)
       return res.status(401).json({ error: "Usuário não encontrado" });
 
