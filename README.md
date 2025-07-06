@@ -42,6 +42,7 @@ DB_USER=root
 DB_PASS=sua_senha //coloca a sua senha aqui
 DB_NAME=sgpuf_db  
 PORT=3001
+JWT_SECRET=sua_senha //coloca uma senha aqui
 
 Inicie o servidor:
 
