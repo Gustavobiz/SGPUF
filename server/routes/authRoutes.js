@@ -4,7 +4,7 @@ const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
 const connection = require("../config/db");
 
-router.post("/login", (req, res) => {
+router.post("/", (req, res) => {
   const { email, senha } = req.body;
 
   const query = `SELECT * FROM Funcionário WHERE Email = ?`;
