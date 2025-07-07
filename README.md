@@ -73,4 +73,5 @@ mysql -u root -p sgpuf_db < database/schema.sql
 
 ## Autores
 
-Gustavo Sousa Bernardes e Elon
+<a href="https://github.com/Gustavobiz">Gustavo Sousa</a><br>
+<a href="https://github.com/ElonArkel">Elon Bezerra</a><br>
