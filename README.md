@@ -74,4 +74,4 @@ mysql -u root -p sgpuf_db < database/schema.sql
 ## Autores
 
 <a href="https://github.com/Gustavobiz">Gustavo Sousa Bernardes</a><br>
-<a href="https://github.com/ElonArkel">Arkell Freire Bezerra</a><br>
+<a href="https://github.com/ElonArkel">Elon Arkell Freire Bezerra</a><br>
