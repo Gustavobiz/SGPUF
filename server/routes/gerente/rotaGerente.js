@@ -11,4 +11,3 @@ router.get("/", autenticar, autorizar("gerente"), (req, res) => {
 });
 
 module.exports = router;
-//teste
