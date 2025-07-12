@@ -9,6 +9,9 @@ app.use(express.json());
 app.use("/login", authRoutes);
 app.use("/register", registerRoutes);
 
+const projetoRoutes = require("./routes/projetoRoutes");
+app.use("/projetos", projetoRoutes);
+
 const rotaGerente = require("./routes/gerente/rotaGerente");
 app.use("/gerente", rotaGerente);
 
