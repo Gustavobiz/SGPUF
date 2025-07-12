@@ -1,10 +1,10 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Layout from './layouts/Layout';
-import Dashboard from './pages/Dashboard';
-import Projetos from './pages/Projetos';
-import Clientes from './pages/Clientes';
+import Layout from '../layouts/Layout';
+import Dashboard from '../pages/Dashboard';
+import Projetos from '../pages/Projetos';
+import Clientes from '../pages/Clientes';
 
-function App() {
+export default function AppRoutes() {
   return (
     <BrowserRouter>
       <Layout>
@@ -17,5 +17,3 @@ function App() {
     </BrowserRouter>
   );
 }
-
-export default App;
