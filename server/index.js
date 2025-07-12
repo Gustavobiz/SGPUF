@@ -9,6 +9,14 @@ app.use(express.json());
 app.use("/login", authRoutes);
 app.use("/register", registerRoutes);
 
+const clienteRoutes = require("./routes/clienteRoutes");
+const unidadeRoutes = require("./routes/unidadeRoutes");
+const concessionariaRoutes = require("./routes/concessionariaRoutes");
+
+app.use("/clientes", clienteRoutes);
+app.use("/unidades-consumidoras", unidadeRoutes);
+app.use("/concessionarias", concessionariaRoutes);
+
 const projetoRoutes = require("./routes/projetoRoutes");
 app.use("/projetos", projetoRoutes);
 
