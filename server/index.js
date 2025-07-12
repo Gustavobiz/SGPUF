@@ -9,9 +9,9 @@ app.use(express.json());
 app.use("/login", authRoutes);
 app.use("/register", registerRoutes);
 
-const clienteRoutes = require("./routes/clienteRoutes");
-const unidadeRoutes = require("./routes/unidadeRoutes");
-const concessionariaRoutes = require("./routes/concessionariaRoutes");
+const clienteRoutes = require("./routes/cliente/clienteRoutes");
+const unidadeRoutes = require("./routes/funcionario/unidadeRoutes");
+const concessionariaRoutes = require("./routes/funcionario/concessionariaRoutes");
 
 app.use("/clientes", clienteRoutes);
 app.use("/unidades-consumidoras", unidadeRoutes);
