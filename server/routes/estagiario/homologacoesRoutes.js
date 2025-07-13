@@ -10,7 +10,7 @@ router.post(
   autorizar("estagiario"),
   async (req, res) => {
     const { idProjeto } = req.params;
-    const { id } = req.usuario; // vem do token JWT
+    const { id } = req.user;
     const dataAtual = new Date(); // data/hora exata da homologação
 
     try {

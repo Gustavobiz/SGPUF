@@ -12,10 +12,12 @@ app.use("/register", registerRoutes);
 const clienteRoutes = require("./routes/cliente/clienteRoutes");
 const unidadeRoutes = require("./routes/funcionario/unidadeRoutes");
 const concessionariaRoutes = require("./routes/funcionario/concessionariaRoutes");
+const homologacoesRoutes = require("./routes/estagiario/homologacoesRoutes");
 
 app.use("/clientes", clienteRoutes);
 app.use("/unidades", unidadeRoutes);
 app.use("/concessionarias", concessionariaRoutes);
+app.use("/homologacoes", homologacoesRoutes);
 
 const projetoRoutes = require("./routes/gerente/projetoRoutes");
 app.use("/projetos", projetoRoutes);
