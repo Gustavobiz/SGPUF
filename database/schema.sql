@@ -92,7 +92,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `sgpuf_db`.`Unidade Consumidora` ;
 
 CREATE TABLE IF NOT EXISTS `sgpuf_db`.`Unidade Consumidora` (
-  `NumeroID` INT NOT NULL,
+ `NumeroID` INT NOT NULL AUTO_INCREMENT,
   `Longitude` VARCHAR(45) NULL,
   `Latitude` VARCHAR(45) NULL,
   `TipoCabo` VARCHAR(45) NULL,
@@ -112,6 +112,7 @@ CREATE TABLE IF NOT EXISTS `sgpuf_db`.`Cliente` (
   `CPF` VARCHAR(11) NOT NULL,
   `endereco` VARCHAR(200) NULL,
   `Nome` VARCHAR(45) NULL,
+  `codigoCliente` VARCHAR(15) NOT NULL UNIQUE,
   PRIMARY KEY (`CPF`))
 ENGINE = InnoDB;
 
@@ -176,7 +177,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `sgpuf_db`.`Instalação` ;
 
 CREATE TABLE IF NOT EXISTS `sgpuf_db`.`Instalação` (
-  `Id` INT NOT NULL,
+  `Id` INT NOT NULL AUTO_INCREMENT,
   `Previsão` VARCHAR(45) NULL,
   `Previsão_inicio` VARCHAR(45) NULL,
   `Previsão_fim` VARCHAR(45) NULL,
@@ -226,7 +227,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `sgpuf_db`.`Vistorias` ;
 
 CREATE TABLE IF NOT EXISTS `sgpuf_db`.`Vistorias` (
-  `idVistorias` INT NOT NULL,
+  `idVistorias` INT NOT NULL AUTO_INCREMENT,
   `Engenheiro_Funcionário_idFuncionário` INT NOT NULL,
   PRIMARY KEY (`idVistorias`, `Engenheiro_Funcionário_idFuncionário`),
   INDEX `fk_Vistorias_Engenheiro1_idx` (`Engenheiro_Funcionário_idFuncionário` ASC) VISIBLE,
