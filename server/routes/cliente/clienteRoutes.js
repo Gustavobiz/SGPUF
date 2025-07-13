@@ -1,7 +1,7 @@
 const express = require("express");
 const router = express.Router();
-const connection = require("../config/db");
-const autenticar = require("../middleware/autenticar");
+const connection = require("../../config/db");
+const { autenticar } = require("../../middlewares/authMiddleware");
 
 router.post("/", autenticar, async (req, res) => {
   const { CPF, endereco, Nome } = req.body;

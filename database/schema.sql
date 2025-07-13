@@ -109,7 +109,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `sgpuf_db`.`Cliente` ;
 
 CREATE TABLE IF NOT EXISTS `sgpuf_db`.`Cliente` (
-  `CPF` INT NOT NULL,
+  `CPF` VARCHAR(11) NOT NULL,
   `endereco` VARCHAR(200) NULL,
   `Nome` VARCHAR(45) NULL,
   PRIMARY KEY (`CPF`))
@@ -122,7 +122,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `sgpuf_db`.`Concessionária` ;
 
 CREATE TABLE IF NOT EXISTS `sgpuf_db`.`Concessionária` (
-  `CNPJ` INT NOT NULL,
+  `CNPJ` VARCHAR(14) NOT NULL,
   `telefone` VARCHAR(45) NULL,
   `endereço` VARCHAR(45) NULL,
   `razaosocial` VARCHAR(45) NULL,
@@ -146,8 +146,8 @@ CREATE TABLE IF NOT EXISTS `sgpuf_db`.`Projeto` (
   `Vmax` VARCHAR(45) NULL,
   `Data_Solicitaçao` DATE NULL,
   `UniConsID` INT NOT NULL,
-  `ConcessionáriaID` INT NOT NULL,
-  `Cliente_CPF` INT NOT NULL,
+  `ConcessionáriaID` VARCHAR(14) NOT NULL,
+  `Cliente_CPF` VARCHAR(11) NOT NULL,
   PRIMARY KEY (`idProjeto`),
   INDEX `fk_Projeto_Unidade Consumidora1_idx` (`UniConsID` ASC) VISIBLE,
   INDEX `fk_Projeto_Concessionária1_idx` (`ConcessionáriaID` ASC) VISIBLE,
