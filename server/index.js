@@ -14,7 +14,7 @@ const unidadeRoutes = require("./routes/funcionario/unidadeRoutes");
 const concessionariaRoutes = require("./routes/funcionario/concessionariaRoutes");
 
 app.use("/clientes", clienteRoutes);
-app.use("/unidades-consumidoras", unidadeRoutes);
+app.use("/unidades", unidadeRoutes);
 app.use("/concessionarias", concessionariaRoutes);
 
 const projetoRoutes = require("./routes/gerente/projetoRoutes");
