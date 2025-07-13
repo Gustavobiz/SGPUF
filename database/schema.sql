@@ -138,7 +138,7 @@ ENGINE = InnoDB;
 DROP TABLE IF EXISTS `sgpuf_db`.`Projeto` ;
 
 CREATE TABLE IF NOT EXISTS `sgpuf_db`.`Projeto` (
-  `idProjeto` INT NOT NULL,
+  `idProjeto` INT NOT NULL AUTO_INCREMENT,
   `Status` VARCHAR(45) NOT NULL,
   `PreçoFinal` FLOAT NULL,
   `VOC` FLOAT NULL,
