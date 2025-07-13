@@ -178,7 +178,7 @@ DROP TABLE IF EXISTS `sgpuf_db`.`Instalação` ;
 
 CREATE TABLE IF NOT EXISTS `sgpuf_db`.`Instalação` (
   `Id` INT NOT NULL AUTO_INCREMENT,
-  `Previsão` VARCHAR(45) NULL,
+  `Status` VARCHAR(45) NOT NULL DEFAULT 'marcado',
   `Previsão_inicio` VARCHAR(45) NULL,
   `Previsão_fim` VARCHAR(45) NULL,
   `Execução` VARCHAR(45) NULL,
@@ -229,6 +229,8 @@ DROP TABLE IF EXISTS `sgpuf_db`.`Vistorias` ;
 CREATE TABLE IF NOT EXISTS `sgpuf_db`.`Vistorias` (
   `idVistorias` INT NOT NULL AUTO_INCREMENT,
   `Engenheiro_Funcionário_idFuncionário` INT NOT NULL,
+  `Lmax` FLOAT NULL,
+  `Vmax` VARCHAR(45) NULL,
   PRIMARY KEY (`idVistorias`, `Engenheiro_Funcionário_idFuncionário`),
   INDEX `fk_Vistorias_Engenheiro1_idx` (`Engenheiro_Funcionário_idFuncionário` ASC) VISIBLE,
   CONSTRAINT `fk_Vistorias_Engenheiro1`
