@@ -5,7 +5,7 @@ const { autenticar } = require("../../middlewares/authMiddleware");
 
 router.post("/", autenticar, async (req, res) => {
   const { CNPJ, telefone, endereco, razaosocial, email } = req.body;
-  //teste  ff
+  //teste  ff  ddd
   try {
     await connection.promise().query(
       `INSERT INTO Concessionária (CNPJ, telefone, endereço, razaosocial, email)
