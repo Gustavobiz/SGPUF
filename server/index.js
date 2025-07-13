@@ -4,25 +4,23 @@ require("dotenv").config();
 
 const authRoutes = require("./routes/publico/authRoutes");
 const registerRoutes = require("./routes/publico/registerRoutes");
-
-app.use(express.json());
-app.use("/login", authRoutes);
-app.use("/register", registerRoutes);
-
 const clienteRoutes = require("./routes/cliente/clienteRoutes");
 const unidadeRoutes = require("./routes/funcionario/unidadeRoutes");
 const concessionariaRoutes = require("./routes/funcionario/concessionariaRoutes");
 const homologacoesRoutes = require("./routes/estagiario/homologacoesRoutes");
+const vistoriaRoutes = require("./routes/vistorias/vistoriaRoutes");
+const projetoRoutes = require("./routes/gerente/projetoRoutes");
+const rotaGerente = require("./routes/gerente/rotaGerente");
 
+app.use(express.json());
+app.use("/login", authRoutes);
+app.use("/register", registerRoutes);
 app.use("/clientes", clienteRoutes);
 app.use("/unidades", unidadeRoutes);
 app.use("/concessionarias", concessionariaRoutes);
 app.use("/homologacoes", homologacoesRoutes);
-
-const projetoRoutes = require("./routes/gerente/projetoRoutes");
+app.use("/vistorias", vistoriaRoutes);
 app.use("/projetos", projetoRoutes);
-
-const rotaGerente = require("./routes/gerente/rotaGerente");
 app.use("/gerente", rotaGerente);
 
 const PORT = process.env.PORT || 3001;
