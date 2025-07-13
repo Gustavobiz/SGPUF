@@ -68,5 +68,33 @@ router.post("/", autenticar, autorizar("gerente"), async (req, res) => {
     res.status(500).json({ error: "Erro no servidor" });
   }
 });
+//Get todos projetos
+router.get("/", autenticar, async (req, res) => {
+  try {
+    const [projetos] = await connection.promise().query(`
+      SELECT 
+        P.idProjeto,
+        P.Status,
+        P.PreçoFinal,
+        P.VOC,
+        P.Isc,
+        P.Lmax,
+        P.Vmax,
+        P.Data_Solicitaçao,
+        U.Nome AS UnidadeNome,
+        C.razaosocial AS ConcessionariaNome,
+        CL.Nome AS ClienteNome
+      FROM Projeto P
+      JOIN \`Unidade Consumidora\` U ON P.UniConsID = U.NumeroID
+      JOIN Concessionária C ON P.ConcessionáriaID = C.CNPJ
+      JOIN Cliente CL ON P.Cliente_CPF = CL.CPF
+    `);
+
+    res.status(200).json(projetos);
+  } catch (error) {
+    console.error("Erro ao buscar projetos:", error);
+    res.status(500).json({ error: "Erro ao buscar projetos" });
+  }
+});
 
 module.exports = router;
