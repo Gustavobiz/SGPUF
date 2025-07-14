@@ -8,7 +8,7 @@ const clienteRoutes = require("./routes/cliente/clienteRoutes");
 const unidadeRoutes = require("./routes/funcionario/unidadeRoutes");
 const concessionariaRoutes = require("./routes/funcionario/concessionariaRoutes");
 const homologacoesRoutes = require("./routes/estagiario/homologacoesRoutes");
-const vistoriaRoutes = require("./routes/vistorias/vistoriaRoutes");
+const vistoriaRoutes = require("./routes/engenheiro/vistoriaRoutes");
 const projetoRoutes = require("./routes/gerente/projetoRoutes");
 const rotaGerente = require("./routes/gerente/rotaGerente");
 
