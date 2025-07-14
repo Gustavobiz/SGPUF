@@ -11,7 +11,10 @@ const homologacoesRoutes = require("./routes/estagiario/homologacoesRoutes");
 const vistoriaRoutes = require("./routes/engenheiro/vistoriaRoutes");
 const projetoRoutes = require("./routes/gerente/projetoRoutes");
 const rotaGerente = require("./routes/gerente/rotaGerente");
+const instalacoesRoutes = require("./routes/funcionario/instalacoesRoutes");
+const pdfRoutes = require("./routes/estagiario/homoPdfRoutes");
 
+app.use("/pdf", pdfRoutes);
 app.use(express.json());
 app.use("/login", authRoutes);
 app.use("/register", registerRoutes);
@@ -22,6 +25,7 @@ app.use("/homologacoes", homologacoesRoutes);
 app.use("/vistorias", vistoriaRoutes);
 app.use("/projetos", projetoRoutes);
 app.use("/gerente", rotaGerente);
+app.use("/instalacoes", instalacoesRoutes);
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
