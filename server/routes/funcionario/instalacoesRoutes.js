@@ -14,7 +14,7 @@ router.post("/", autenticar, async (req, res) => {
   } = req.body;
 
   try {
-    // Verifica se o projeto existe
+    // Verifica se o projeto exist
     const [projeto] = await connection
       .promise()
       .query("SELECT * FROM Projeto WHERE idProjeto = ?", [Projeto_idProjeto]);
