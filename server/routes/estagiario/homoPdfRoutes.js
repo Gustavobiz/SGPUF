@@ -12,13 +12,13 @@ router.get("/homologacao/pdf/:idProjeto", async (req, res) => {
   try {
     const [projetos] = await connection.promise().query(
       `
-  SELECT 
-    Projeto.*, 
-    Cliente.\`Nome\` AS nomeCliente 
-  FROM Projeto
-  JOIN Cliente ON Projeto.Cliente_CPF = Cliente.CPF
-  WHERE Projeto.idProjeto = ?
-`,
+      SELECT 
+        Projeto.*, 
+        Cliente.\`Nome\` AS nomeCliente 
+      FROM Projeto
+      JOIN Cliente ON Projeto.Cliente_CPF = Cliente.CPF
+      WHERE Projeto.idProjeto = ?
+    `,
       [idProjeto]
     );
 
@@ -42,7 +42,19 @@ router.get("/homologacao/pdf/:idProjeto", async (req, res) => {
     const browser = await puppeteer.launch({ headless: "new" });
     const page = await browser.newPage();
     await page.setContent(html);
-    const pdfBuffer = await page.pdf({ format: "A4" });
+
+    // Caminho do PDF a ser salvo
+    const outputDir = path.join(__dirname, "..", "..", "pdfs");
+    const pdfPath = path.join(
+      outputDir,
+      `homologacao_projeto_${idProjeto}.pdf`
+    );
+
+    //  Salva o PDF no servidor
+    await page.pdf({ path: pdfPath, format: "A4" });
+
+    // Também envia como resposta
+    const pdfBuffer = await fs.readFile(pdfPath);
     await browser.close();
 
     res.set({
