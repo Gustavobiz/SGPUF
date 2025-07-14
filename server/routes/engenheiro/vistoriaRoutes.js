@@ -9,6 +9,7 @@ router.post("/", autenticar, autorizar("engenheiro"), async (req, res) => {
 
   try {
     // Verifica se projeto existe
+    //teste
     const [projeto] = await connection
       .promise()
       .query("SELECT * FROM Projeto WHERE idProjeto = ?", [projetoId]);
