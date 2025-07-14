@@ -44,7 +44,7 @@ router.get("/homologacao/pdf/:idProjeto", async (req, res) => {
     await page.setContent(html);
 
     // Caminho do PDF a ser salvo
-    const outputDir = path.join(__dirname, "..", "..", "pdfs");
+    const outputDir = path.join(__dirname, "..", "..", "pdfs", "homologacao");
     const pdfPath = path.join(
       outputDir,
       `homologacao_projeto_${idProjeto}.pdf`
