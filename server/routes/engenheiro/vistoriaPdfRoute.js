@@ -4,17 +4,17 @@ const connection = require("../../config/db");
 const generatePDF = require("../../utils/generateVistoriaPDF");
 const path = require("path");
 
-router.get("/:id/pdf", async (req, res) => {
+router.get("/pdf/:id", async (req, res) => {
   const idVistoria = req.params.id;
 
   try {
     const [vistoriaRows] = await connection.promise().query(
-      `SELECT v.*, p.VOC, p.Isc, p.Data_Solicitaçao, p.UniConsID, p.ConcessionáriaID, p.Cliente_CPF
-       FROM Vistorias v
-       JOIN Revisa r ON r.Vistorias_idVistorias = v.idVistorias
-       JOIN Projeto p ON r.IDProjeto = p.idProjeto
-
-       WHERE v.idVistorias = ?`,
+      `SELECT v.*, p.VOC, p.Isc, p.Lmax, p.Vmax, p.Data_Solicitaçao,
+          p.UniConsID, p.ConcessionáriaID, p.Cliente_CPF
+   FROM Vistorias v
+   JOIN Revisa r ON v.idVistorias = r.Vistorias_idVistorias
+   JOIN Projeto p ON r.IDProjeto = p.idProjeto
+   WHERE v.idVistorias = ?`,
       [idVistoria]
     );
 

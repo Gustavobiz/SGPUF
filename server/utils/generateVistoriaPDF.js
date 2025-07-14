@@ -4,7 +4,7 @@ const handlebars = require("handlebars");
 const puppeteer = require("puppeteer");
 
 async function generateVistoriaPDF(data, outputPath) {
-  const templatePath = path.join(__dirname, "../templates/vistoria.hbs");
+  const templatePath = path.join(__dirname, "../routes/templates/vistoria.hbs");
   const html = await fs.readFile(templatePath, "utf-8");
   const compileTemplate = handlebars.compile(html);
   const finalHtml = compileTemplate(data);
