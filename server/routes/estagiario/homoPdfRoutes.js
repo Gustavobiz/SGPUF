@@ -12,13 +12,13 @@ router.get("/homologacao/pdf/:idProjeto", async (req, res) => {
   try {
     const [projetos] = await connection.promise().query(
       `
-      SELECT 
-        Projeto.*, 
-        Cliente.Nome AS nomeCliente 
-      FROM Projeto
-      JOIN Cliente ON Projeto.Cliente_CPF = Cliente.CPF
-      WHERE Projeto.idProjeto = ?
-    `,
+  SELECT 
+    Projeto.*, 
+    Cliente.\`Nome\` AS nomeCliente 
+  FROM Projeto
+  JOIN Cliente ON Projeto.Cliente_CPF = Cliente.CPF
+  WHERE Projeto.idProjeto = ?
+`,
       [idProjeto]
     );
 

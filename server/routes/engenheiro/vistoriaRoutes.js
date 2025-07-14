@@ -23,6 +23,15 @@ router.post("/", autenticar, autorizar("engenheiro"), async (req, res) => {
       [engenheiroId, Lmax, Vmax]
     );
 
+    const idVistoria = result.insertId;
+
+    // Relaciona com o projeto na tabela Revisa
+    await connection.promise().query(
+      `INSERT INTO Revisa (IDProjeto, Vistorias_idVistorias)
+       VALUES (?, ?)`,
+      [projetoId, idVistoria]
+    );
+
     // Atualiza status do projeto
     await connection
       .promise()
@@ -30,7 +39,10 @@ router.post("/", autenticar, autorizar("engenheiro"), async (req, res) => {
         projetoId,
       ]);
 
-    res.status(201).json({ message: "Vistoria criada e projeto atualizado!" });
+    res.status(201).json({
+      message: "Vistoria criada, vinculada ao projeto e status atualizado!",
+      idVistoria,
+    });
   } catch (error) {
     console.error("Erro ao criar vistoria:", error);
     res.status(500).json({ error: "Erro no servidor" });
