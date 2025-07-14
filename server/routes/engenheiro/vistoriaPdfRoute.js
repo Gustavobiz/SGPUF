@@ -11,7 +11,9 @@ router.get("/:id/pdf", async (req, res) => {
     const [vistoriaRows] = await connection.promise().query(
       `SELECT v.*, p.VOC, p.Isc, p.Data_Solicitaçao, p.UniConsID, p.ConcessionáriaID, p.Cliente_CPF
        FROM Vistorias v
-       JOIN Projeto p ON v.Projeto_idProjeto = p.idProjeto
+       JOIN Revisa r ON r.Vistorias_idVistorias = v.idVistorias
+       JOIN Projeto p ON r.IDProjeto = p.idProjeto
+
        WHERE v.idVistorias = ?`,
       [idVistoria]
     );
