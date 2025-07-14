@@ -4,7 +4,7 @@ const connection = require("../../config/db");
 const generatePDF = require("../../utils/generateVistoriaPDF");
 const path = require("path");
 
-router.get("/:id/pdf", async (req, res) => {
+router.get("/vistoria/pdf/:id", async (req, res) => {
   const idVistoria = req.params.id;
 
   try {

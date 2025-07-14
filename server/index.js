@@ -13,7 +13,7 @@ const projetoRoutes = require("./routes/gerente/projetoRoutes");
 const rotaGerente = require("./routes/gerente/rotaGerente");
 const instalacoesRoutes = require("./routes/funcionario/instalacoesRoutes");
 const pdfRoutes = require("./routes/estagiario/homoPdfRoutes");
-const vistoriaPdfRoutes = require("./routes/vistorias/pdfRoute");
+const vistoriaPdfRoutes = require("./routes/engenheiro/vistoriaPdfRoute");
 
 app.use("/vistorias", vistoriaPdfRoutes);
 app.use("/pdf", pdfRoutes);
