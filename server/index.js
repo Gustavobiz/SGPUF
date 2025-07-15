@@ -4,7 +4,7 @@ const cors = require("cors");
 require("dotenv").config();
 app.use(
   cors({
-    origin: "http://localhost:5173", // frontend React
+    origin: "http://localhost:5173", // frontend React t
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
   })
