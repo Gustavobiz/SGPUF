@@ -6,6 +6,7 @@ const { autenticar, autorizar } = require("../../middlewares/authMiddleware");
 // Rota: Criar projeto (somente gerente)d
 router.post("/", autenticar, autorizar("gerente"), async (req, res) => {
   const {
+    Nome,
     Status,
     PreçoFinal,
     VOC,
@@ -43,9 +44,10 @@ router.post("/", autenticar, autorizar("gerente"), async (req, res) => {
 
     const [result] = await connection.promise().query(
       `INSERT INTO Projeto 
-       (Status, PreçoFinal, VOC, Isc, Lmax, Vmax, Data_Solicitaçao, UniConsID, ConcessionáriaID, Cliente_CPF)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+       (Nome, Status, PreçoFinal,VOC, Isc, Lmax, Vmax, Data_Solicitaçao, UniConsID, ConcessionáriaID, Cliente_CPF)
+       VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       [
+        Nome,
         Status,
         PreçoFinal,
         VOC,
@@ -74,6 +76,7 @@ router.get("/", autenticar, async (req, res) => {
     const [projetos] = await connection.promise().query(`
       SELECT 
         P.idProjeto,
+        P.Nome,
         P.Status,
         P.PreçoFinal,
         P.VOC,
@@ -83,11 +86,13 @@ router.get("/", autenticar, async (req, res) => {
         P.Data_Solicitaçao,
         U.Nome AS UnidadeNome,
         C.razaosocial AS ConcessionariaNome,
-        CL.Nome AS ClienteNome
+        CL.Nome AS ClienteNome,
+        R.Vistorias_idVistorias AS idVistoria
       FROM Projeto P
       JOIN \`Unidade Consumidora\` U ON P.UniConsID = U.NumeroID
       JOIN Concessionária C ON P.ConcessionáriaID = C.CNPJ
       JOIN Cliente CL ON P.Cliente_CPF = CL.CPF
+      LEFT JOIN Revisa R ON P.idProjeto = R.IDProjeto
     `);
 
     res.status(200).json(projetos);
