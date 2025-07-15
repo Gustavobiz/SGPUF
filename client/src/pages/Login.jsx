@@ -1,17 +1,10 @@
 // src/pages/Login.jsx
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import {
-  Box,
-  Button,
-  TextField,
-  Typography,
-  Alert,
-  Container,
-} from "@mui/material";
+import { TextField, Button, Typography, Alert, Box } from "@mui/material";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-export default function Login() {
+export default function Login({ onTrocar }) {
   const [email, setEmail] = useState("");
   const [senha, setSenha] = useState("");
   const [erro, setErro] = useState("");
@@ -23,41 +16,43 @@ export default function Login() {
         email,
         senha,
       });
-
       const { token, tipo } = res.data;
       localStorage.setItem("token", token);
       localStorage.setItem("tipo", tipo);
-      if (tipo === "gerente") navigate("/dashboard");
-      else if (tipo === "engenheiro") navigate("/dashboard");
-      else if (tipo === "estagiario") navigate("/dashboard");
-      else navigate("/clientes"); // funcionário comum
+      navigate("/dashboard");
     } catch (err) {
       setErro("Credenciais inválidas");
     }
   };
 
   return (
-    <Container maxWidth="xs">
-      <Box mt={10} display="flex" flexDirection="column" gap={2}>
-        <Typography variant="h5">Login - SGPUF</Typography>
-        {erro && <Alert severity="error">{erro}</Alert>}
-        <TextField
-          label="Email"
-          fullWidth
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-        />
-        <TextField
-          label="Senha"
-          type="password"
-          fullWidth
-          value={senha}
-          onChange={(e) => setSenha(e.target.value)}
-        />
-        <Button variant="contained" onClick={handleLogin}>
-          Entrar
-        </Button>
-      </Box>
-    </Container>
+    <Box display="flex" flexDirection="column" gap={2}>
+      {erro && <Alert severity="error">{erro}</Alert>}
+      <TextField
+        label="Email"
+        fullWidth
+        value={email}
+        onChange={(e) => setEmail(e.target.value)}
+      />
+      <TextField
+        label="Senha"
+        fullWidth
+        type="password"
+        value={senha}
+        onChange={(e) => setSenha(e.target.value)}
+      />
+      <Button variant="contained" onClick={handleLogin}>
+        Entrar
+      </Button>
+      <Typography variant="body2" align="center" color="text.secondary">
+        Ainda não tem conta?{" "}
+        <span
+          onClick={onTrocar}
+          style={{ color: "#6b9d30", cursor: "pointer", fontWeight: "bold" }}
+        >
+          Criar conta
+        </span>
+      </Typography>
+    </Box>
   );
 }
