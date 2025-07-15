@@ -140,6 +140,7 @@ DROP TABLE IF EXISTS `sgpuf_db`.`Projeto` ;
 CREATE TABLE IF NOT EXISTS `sgpuf_db`.`Projeto` (
   `idProjeto` INT NOT NULL AUTO_INCREMENT,
   `Status` VARCHAR(45) NOT NULL,
+  `Nome` VARCHAR(45) NOT NULL,
   `PreçoFinal` FLOAT NULL,
   `VOC` FLOAT NULL,
   `Isc` FLOAT NULL,
@@ -181,7 +182,6 @@ CREATE TABLE IF NOT EXISTS `sgpuf_db`.`Instalação` (
   `Status` VARCHAR(45) NOT NULL DEFAULT 'marcado',
   `Previsão_inicio` VARCHAR(45) NULL,
   `Previsão_fim` VARCHAR(45) NULL,
-  `Execução` VARCHAR(45) NULL,
   `Execução_inicio` VARCHAR(45) NULL,
   `Execução_fim` VARCHAR(45) NULL,
   `Projeto_idProjeto` INT NOT NULL,

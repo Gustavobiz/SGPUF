@@ -57,11 +57,7 @@ export default function Projetos() {
   };
 
   return (
-    <Layout>
-      <Typography variant="h5" fontWeight="bold" mb={3}>
-        Lista de Projetos
-      </Typography>
-
+    <Layout pageTitle="Lista de Projetos">
       <Box display="flex" flexDirection="column" gap={2}>
         {projetos.map((projeto) => (
           <Card
