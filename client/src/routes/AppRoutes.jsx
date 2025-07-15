@@ -1,19 +1,49 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Layout from '../layouts/Layout';
-import Dashboard from '../pages/Dashboard';
-import Projetos from '../pages/Projetos';
-import Clientes from '../pages/Clientes';
+// src/routes/AppRoutes.jsx
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import Login from "../pages/Login";
+import Dashboard from "../pages/Dashboard";
+import Clientes from "../pages/Clientes";
+import Projetos from "../pages/Projetos";
+
+const tipo = localStorage.getItem("tipo");
+const token = localStorage.getItem("token");
+
+const isAuthenticated = () => !!token;
+
+const PrivateRoute = ({ children }) => {
+  return isAuthenticated() ? children : <Navigate to="/" />;
+};
 
 export default function AppRoutes() {
   return (
     <BrowserRouter>
-      <Layout>
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/projetos" element={<Projetos />} />
-          <Route path="/clientes" element={<Clientes />} />
-        </Routes>
-      </Layout>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route
+          path="/dashboard"
+          element={
+            <PrivateRoute>
+              <Dashboard />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/clientes"
+          element={
+            <PrivateRoute>
+              <Clientes />
+            </PrivateRoute>
+          }
+        />
+        <Route
+          path="/projetos"
+          element={
+            <PrivateRoute>
+              <Projetos />
+            </PrivateRoute>
+          }
+        />
+      </Routes>
     </BrowserRouter>
   );
 }
