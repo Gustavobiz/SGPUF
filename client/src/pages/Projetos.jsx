@@ -33,6 +33,7 @@ export default function Projetos() {
       window.location.href = `/projetos/${id}`;
     }
   };
+
   const gerarPDFVistoria = (idVistoria) => {
     axios
       .get(`${import.meta.env.VITE_API_URL}/vistorias/pdf/${idVistoria}`, {

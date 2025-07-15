@@ -102,4 +102,50 @@ router.get("/", autenticar, async (req, res) => {
   }
 });
 
+// Get projeto por ID
+router.get("/:id", autenticar, async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const [projetos] = await connection.promise().query(
+      `
+      SELECT 
+        P.idProjeto,
+        P.Status,
+        P.PreçoFinal,
+        P.VOC,
+        P.Isc,
+        P.Lmax,
+        P.Vmax,
+        P.Data_Solicitaçao,
+        U.Nome AS UnidadeNome,
+        U.Longitude,
+        U.Latitude,
+        U.TipoCabo,
+        U.Potência,
+        U.Bitola,
+        C.razaosocial AS ConcessionariaNome,
+        C.CNPJ,
+        CL.Nome AS ClienteNome,
+        CL.CPF AS ClienteCPF
+      FROM Projeto P
+      JOIN \`Unidade Consumidora\` U ON P.UniConsID = U.NumeroID
+      JOIN Concessionária C ON P.ConcessionáriaID = C.CNPJ
+      JOIN Cliente CL ON P.Cliente_CPF = CL.CPF
+      WHERE P.idProjeto = ?
+    `,
+      [id]
+    );
+
+    if (projetos.length === 0) {
+      return res.status(404).json({ error: "Projeto não encontrado" });
+    }
+
+    res.status(200).json(projetos[0]);
+  } catch (error) {
+    console.error("Erro ao buscar projeto por ID:", error);
+    res.status(500).json({ error: "Erro ao buscar projeto" });
+  }
+});
+
 module.exports = router;

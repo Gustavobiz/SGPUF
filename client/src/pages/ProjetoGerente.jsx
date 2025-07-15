@@ -1,85 +1,63 @@
-// src/pages/ProjetoGerente.jsx
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { Box, Typography, Button, Card } from "@mui/material";
-import axios from "axios";
+import { Box, Button, Typography, Divider } from "@mui/material";
+import Layout from "../layouts/Layout";
 
 export default function ProjetoGerente() {
-  const { id } = useParams();
-  const token = localStorage.getItem("token");
-
-  const [projeto, setProjeto] = useState(null);
-  const [unidade, setUnidade] = useState(null);
-
-  useEffect(() => {
-    axios
-      .get(`${import.meta.env.VITE_API_URL}/projetos/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((res) => {
-        setProjeto(res.data.projeto);
-        setUnidade(res.data.unidade);
-      })
-      .catch((err) => console.error("Erro ao buscar projeto", err));
-  }, [id]);
-
-  const finalizarProjeto = () => {
-    axios
-      .patch(
-        `${import.meta.env.VITE_API_URL}/projetos/${id}/finalizar`,
-        {},
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      )
-      .then(() => {
-        alert("Projeto finalizado com sucesso");
-        setProjeto({ ...projeto, Status: "finalizado" });
-      })
-      .catch(() => alert("Erro ao finalizar projeto"));
+  // suposição: projeto já foi buscado no useEffect
+  const projeto = {
+    idProjeto: 1,
+    Status: "vistoriado",
+    PreçoFinal: 15000.8,
+    ClienteNome: "João Silva",
+    ConcessionariaNome: "Neoenergia",
+    UnidadeNome: "UC João",
+    Latitude: "-5.79",
+    Longitude: "-35.20",
+    Potência: "550 kWp",
+    TipoCabo: "Cobre",
+    Bitola: "10mm",
   };
 
-  if (!projeto || !unidade) return <Typography>Carregando...</Typography>;
+  const finalizarProjeto = () => {
+    alert("Finalizar Projeto");
+  };
 
   return (
-    <Box p={3}>
-      <Typography variant="h4" fontWeight="bold" gutterBottom>
-        Projeto: {projeto.Nome}
-      </Typography>
-      <Typography>Status: {projeto.Status}</Typography>
+    <Layout pageTitle="Detalhes do Projeto">
+      <Box p={4}>
+        <Typography variant="h4" fontWeight="bold" gutterBottom>
+          Projeto: {projeto.idProjeto}
+        </Typography>
+        <Typography>Status: {projeto.Status}</Typography>
+        <Typography>Preço Final: R$ {projeto.PreçoFinal}</Typography>
+        <Typography>Cliente: {projeto.ClienteNome}</Typography>
+        <Typography>Concessionária: {projeto.ConcessionariaNome}</Typography>
 
-      <Box mt={3}>
-        <Typography variant="h6">Unidade Consumidora</Typography>
-        <Typography>Endereço: {unidade.endereco}</Typography>
-        <Typography>Latitude: {unidade.Latitude}</Typography>
-        <Typography>Longitude: {unidade.Longitude}</Typography>
-      </Box>
+        <Divider sx={{ my: 3 }} />
 
-      <Box mt={3} display="flex" gap={2}>
-        <Button
-          variant="contained"
-          sx={{ background: "#b6f566", color: "#000" }}
-        >
-          Gerar Documentos
-        </Button>
-        <Button
-          variant="outlined"
-          sx={{ borderColor: "#6b9d30", color: "#6b9d30" }}
-        >
-          Marcar Instalação
-        </Button>
-        <Button variant="outlined" color="primary">
-          Editar Informações
-        </Button>
-        <Button
-          variant="contained"
-          sx={{ background: "#202027", color: "#fff" }}
-          onClick={finalizarProjeto}
-          disabled={projeto.Status === "finalizado"}
-        >
-          Finalizar Projeto
-        </Button>
+        <Typography variant="h6" gutterBottom>
+          Unidade Consumidora
+        </Typography>
+        <Typography>Nome: {projeto.UnidadeNome}</Typography>
+        <Typography>Latitude: {projeto.Latitude}</Typography>
+        <Typography>Longitude: {projeto.Longitude}</Typography>
+        <Typography>Potência: {projeto.Potência}</Typography>
+        <Typography>Tipo de Cabo: {projeto.TipoCabo}</Typography>
+        <Typography>Bitola: {projeto.Bitola}</Typography>
+
+        <Box mt={4} display="flex" gap={2} flexWrap="wrap">
+          <Button variant="outlined" color="success">
+            Marcar Instalação
+          </Button>
+          <Button
+            variant="contained"
+            color="secondary"
+            onClick={finalizarProjeto}
+            disabled={projeto.Status === "finalizado"}
+          >
+            Finalizar Projeto
+          </Button>
+        </Box>
       </Box>
-    </Box>
+    </Layout>
   );
 }
