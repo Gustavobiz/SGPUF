@@ -19,7 +19,8 @@ export default function Login({ onTrocar }) {
       const { token, tipo } = res.data;
       localStorage.setItem("token", token);
       localStorage.setItem("tipo", tipo);
-      navigate("/dashboard");
+      console.log("Login bem-sucedido. Redirecionando para /projetos");
+      navigate("/projetos");
     } catch (err) {
       setErro("Credenciais inválidas");
     }
