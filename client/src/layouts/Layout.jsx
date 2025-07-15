@@ -7,7 +7,12 @@ import {
   Button,
   Container,
 } from "@mui/material";
+import { Instagram, Facebook, Twitter } from "@mui/icons-material";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
+import Logo from "../assets/logo.svg";
+import WbSunnyIcon from "@mui/icons-material/WbSunny";
+
+<WbSunnyIcon sx={{ color: "#202027", fontSize: 32 }} />;
 
 export default function Layout({ children }) {
   const navigate = useNavigate();
@@ -22,26 +27,56 @@ export default function Layout({ children }) {
       }}
     >
       {/* AppBar superior */}
-      <AppBar position="static" sx={{ bgcolor: "#202027" }}>
+      <AppBar position="static" sx={{ bgcolor: "#FFFFFF" }}>
         <Toolbar sx={{ justifyContent: "space-between" }}>
-          <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-            <img src="/logo.svg" alt="Logo SGPUF" width={24} height={24} />
-            <Typography variant="h6" color="#fff" fontWeight="bold">
+          <Box display="flex" alignItems="center">
+            <WbSunnyIcon sx={{ color: "#202027", mr: 1 }} />
+            <Typography
+              variant="h6"
+              sx={{ color: "#202027", fontWeight: "bold" }}
+            >
               SGPUF
             </Typography>
           </Box>
           <Box sx={{ display: "flex", gap: 2 }}>
-            <Button color="inherit" component={RouterLink} to="/projetos">
+            <Button
+              component={RouterLink}
+              to="/projetos"
+              sx={{
+                color: "#202027",
+                "&:hover": {
+                  color: "#6b9d30",
+                  backgroundColor: "transparent", // mantém sem fundo
+                },
+              }}
+            >
               Projetos
             </Button>
-            <Button color="inherit" component={RouterLink} to="/unidades">
+            <Button
+              component={RouterLink}
+              to="/unidades"
+              sx={{
+                color: "#202027",
+                "&:hover": {
+                  color: "#6b9d30",
+                  backgroundColor: "transparent",
+                },
+              }}
+            >
               Unidades Consumidoras
             </Button>
-            <Button color="inherit" component={RouterLink} to="/vistorias">
+            <Button
+              component={RouterLink}
+              to="/vistorias"
+              sx={{
+                color: "#202027",
+                "&:hover": {
+                  color: "#6b9d30",
+                  backgroundColor: "transparent",
+                },
+              }}
+            >
               Vistorias
-            </Button>
-            <Button color="inherit" component={RouterLink} to="/usuarios">
-              Usuários
             </Button>
           </Box>
         </Toolbar>
@@ -55,7 +90,7 @@ export default function Layout({ children }) {
         sx={{
           bgcolor: "#202027",
           color: "#fff",
-          p: 3,
+          py: 2,
           mt: 6,
           borderTopLeftRadius: "30px",
           borderTopRightRadius: "30px",
@@ -69,17 +104,16 @@ export default function Layout({ children }) {
             gap: 1,
           }}
         >
-          <Typography variant="h6">SGPUF</Typography>
-          <Box sx={{ display: "flex", gap: 3 }}>
+          <Box sx={{ display: "flex", gap: 3, fontSize: 14 }}>
             <Typography variant="body2">Sobre nós</Typography>
             <Typography variant="body2">Serviços</Typography>
             <Typography variant="body2">Preços</Typography>
             <Typography variant="body2">Blog</Typography>
           </Box>
           <Box sx={{ mt: 1, display: "flex", gap: 2 }}>
-            <img src="/icons/linkedin.svg" width={20} />
-            <img src="/icons/facebook.svg" width={20} />
-            <img src="/icons/twitter.svg" width={20} />
+            <Instagram fontSize="small" />
+            <Facebook fontSize="small" />
+            <Twitter fontSize="small" />
           </Box>
         </Container>
       </Box>

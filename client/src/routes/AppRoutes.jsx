@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import Login from "../pages/Login";
+import AuthContainer from "../components/AuthContainer";
 import Clientes from "../pages/Clientes";
 import Projetos from "../pages/Projetos";
 import Unidades from "../pages/Unidades";
@@ -13,7 +13,7 @@ const PrivateRoute = ({ children }) => {
 export default function AppRoutes() {
   return (
     <Routes>
-      <Route path="/" element={<Login />} />
+      <Route path="/" element={<AuthContainer />} />
       <Route
         path="/projetos"
         element={
