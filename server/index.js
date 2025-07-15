@@ -1,6 +1,15 @@
 const express = require("express");
 const app = express();
+const cors = require("cors");
 require("dotenv").config();
+app.use(
+  cors({
+    origin: "http://localhost:5173", // frontend React
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  })
+);
+app.use(express.json());
 
 const authRoutes = require("./routes/publico/authRoutes");
 const registerRoutes = require("./routes/publico/registerRoutes");
