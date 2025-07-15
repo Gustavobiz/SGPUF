@@ -33,6 +33,28 @@ export default function Projetos() {
       window.location.href = `/projetos/${id}`;
     }
   };
+  const gerarPDFVistoria = (idVistoria) => {
+    axios
+      .get(`${import.meta.env.VITE_API_URL}/vistorias/pdf/${idVistoria}`, {
+        responseType: "blob",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((res) => {
+        const url = window.URL.createObjectURL(new Blob([res.data]));
+        const link = document.createElement("a");
+        link.href = url;
+        link.setAttribute("download", `vistoria_${idVistoria}.pdf`);
+        document.body.appendChild(link);
+        link.click();
+        link.remove();
+      })
+      .catch((err) => {
+        console.error("Erro ao gerar PDF de vistoria:", err);
+        alert("Erro ao gerar o PDF de vistoria.");
+      });
+  };
 
   const gerarPDFHomologacao = (idProjeto) => {
     axios
@@ -101,6 +123,19 @@ export default function Projetos() {
                   >
                     GERAR HOMOLOGAÇÃO
                   </Button>
+                  {podeVistoriar(projeto.Status) && projeto.idVistoria && (
+                    <Button
+                      variant="contained"
+                      sx={{
+                        backgroundColor: "#202027",
+                        color: "#fff",
+                        fontWeight: "bold",
+                      }}
+                      onClick={() => gerarPDFVistoria(projeto.idVistoria)}
+                    >
+                      GERAR VISTORIA
+                    </Button>
+                  )}
 
                   <Button
                     variant="outlined"

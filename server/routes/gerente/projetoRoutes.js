@@ -86,11 +86,13 @@ router.get("/", autenticar, async (req, res) => {
         P.Data_Solicitaçao,
         U.Nome AS UnidadeNome,
         C.razaosocial AS ConcessionariaNome,
-        CL.Nome AS ClienteNome
+        CL.Nome AS ClienteNome,
+        R.Vistorias_idVistorias AS idVistoria
       FROM Projeto P
       JOIN \`Unidade Consumidora\` U ON P.UniConsID = U.NumeroID
       JOIN Concessionária C ON P.ConcessionáriaID = C.CNPJ
       JOIN Cliente CL ON P.Cliente_CPF = CL.CPF
+      LEFT JOIN Revisa R ON P.idProjeto = R.IDProjeto
     `);
 
     res.status(200).json(projetos);
