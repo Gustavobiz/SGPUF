@@ -67,6 +67,7 @@ export default function Register({ onTrocar }) {
         label="Tipo"
         select
         fullWidth
+        value={dados.tipo}
         onChange={handleChange}
       >
         <MenuItem value="gerente">Gerente</MenuItem>
