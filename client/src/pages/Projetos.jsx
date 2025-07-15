@@ -65,13 +65,16 @@ export default function Projetos() {
             sx={{
               p: 2,
               borderRadius: "10px",
-              backgroundColor: "#f4f4f4",
+              backgroundColor: "#fff",
               boxShadow: 1,
             }}
           >
-            <Typography variant="h6">{projeto.ClienteNome}</Typography>
+            <Typography variant="h6" fontWeight="bold">
+              {projeto.Nome}
+            </Typography>
             <Typography variant="body2" color="text.secondary">
               Status: {projeto.Status}
+              <br></br> Cliente: {projeto.ClienteNome}
             </Typography>
 
             <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap", mt: 1 }}>
