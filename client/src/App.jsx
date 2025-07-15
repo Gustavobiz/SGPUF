@@ -1,21 +1,8 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Layout from './layouts/Layout';
-import Dashboard from './pages/Dashboard';
-import Projetos from './pages/Projetos';
-import Clientes from './pages/Clientes';
+// src/App.jsx
+import AuthContainer from "./components/AuthContainer";
 
 function App() {
-  return (
-    <BrowserRouter>
-      <Layout>
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/projetos" element={<Projetos />} />
-          <Route path="/clientes" element={<Clientes />} />
-        </Routes>
-      </Layout>
-    </BrowserRouter>
-  );
+  return <AuthContainer />;
 }
 
 export default App;
