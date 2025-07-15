@@ -1,49 +1,51 @@
-// src/routes/AppRoutes.jsx
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import Login from "../pages/Login";
-import Dashboard from "../pages/Dashboard";
+import AuthContainer from "../components/AuthContainer";
 import Clientes from "../pages/Clientes";
 import Projetos from "../pages/Projetos";
-
-const tipo = localStorage.getItem("tipo");
-const token = localStorage.getItem("token");
-
-const isAuthenticated = () => !!token;
+import Unidades from "../pages/Unidades";
+import Vistorias from "../pages/Vistorias";
 
 const PrivateRoute = ({ children }) => {
-  return isAuthenticated() ? children : <Navigate to="/" />;
+  const token = localStorage.getItem("token");
+  return token ? children : <Navigate to="/" />;
 };
 
 export default function AppRoutes() {
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route
-          path="/dashboard"
-          element={
-            <PrivateRoute>
-              <Dashboard />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/clientes"
-          element={
-            <PrivateRoute>
-              <Clientes />
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/projetos"
-          element={
-            <PrivateRoute>
-              <Projetos />
-            </PrivateRoute>
-          }
-        />
-      </Routes>
-    </BrowserRouter>
+    <Routes>
+      <Route path="/" element={<AuthContainer />} />
+      <Route
+        path="/projetos"
+        element={
+          <PrivateRoute>
+            <Projetos />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/clientes"
+        element={
+          <PrivateRoute>
+            <Clientes />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/unidades"
+        element={
+          <PrivateRoute>
+            <Unidades />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/vistorias"
+        element={
+          <PrivateRoute>
+            <Vistorias />
+          </PrivateRoute>
+        }
+      />
+    </Routes>
   );
 }

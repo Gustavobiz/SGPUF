@@ -1,12 +1,11 @@
-// src/pages/Projetos.jsx
 import Layout from "../layouts/Layout";
 import { Typography } from "@mui/material";
 
-export default function Projetos() {
+export default function Vistorias() {
   return (
-    <Layout pageTitle="Lista de Projetos">
+    <Layout pageTitle="Vistoria">
       <Typography variant="h3" color="primary">
-        🚀 Entrou na página de Projetos
+        🚀 <div>Vistorias</div>
       </Typography>
     </Layout>
   );

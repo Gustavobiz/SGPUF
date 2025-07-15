@@ -10,17 +10,14 @@ export default function AuthContainer() {
   return (
     <Box
       sx={{
-        bgcolor: "background.default",
+        bgcolor: "#202027",
         minHeight: "100vh",
         display: "flex",
         alignItems: "center",
         justifyContent: "center",
       }}
     >
-      <Paper
-        elevation={3}
-        sx={{ p: 4, width: 400, bgcolor: "background.paper" }}
-      >
+      <Paper elevation={3} sx={{ p: 4, width: 400, bgcolor: "#eeefed" }}>
         <Typography variant="h5" align="center" gutterBottom>
           {modoCadastro ? "Criar Conta" : "Entrar no SGPUF"}
         </Typography>

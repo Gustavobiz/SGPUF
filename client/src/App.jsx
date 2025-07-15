@@ -1,8 +1,6 @@
 // src/App.jsx
-import AuthContainer from "./components/AuthContainer";
+import AppRoutes from "./routes/AppRoutes";
 
-function App() {
-  return <AuthContainer />;
+export default function App() {
+  return <AppRoutes />;
 }
-
-export default App;

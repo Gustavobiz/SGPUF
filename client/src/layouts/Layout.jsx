@@ -1,46 +1,123 @@
-import { Drawer, List, ListItem, ListItemText, Toolbar, AppBar, Typography, CssBaseline, Box } from '@mui/material';
-import { Link } from 'react-router-dom';
+// src/layouts/Layout.jsx
+// src/layouts/Layout.jsx
+import {
+  AppBar,
+  Toolbar,
+  Typography,
+  Box,
+  Button,
+  Container,
+} from "@mui/material";
+import { Instagram, Facebook, Twitter } from "@mui/icons-material";
+import { Link as RouterLink, useNavigate } from "react-router-dom";
+import WbSunnyIcon from "@mui/icons-material/WbSunny";
+import PageHeader from "../components/PageHeader"; // importe o componente de título
 
-const drawerWidth = 240;
+export default function Layout({ children, pageTitle }) {
+  const navigate = useNavigate();
 
-export default function Layout({ children }) {
   return (
-    <Box sx={{ display: 'flex' }}>
-      <CssBaseline />
-
-      <AppBar position="fixed" sx={{ zIndex: (theme) => theme.zIndex.drawer + 1 }}>
-        <Toolbar>
-          <Typography variant="h6" noWrap component="div">
-            SGPUF - Sistema Solar
-          </Typography>
+    <Box
+      sx={{
+        bgcolor: "#eeefed",
+        minHeight: "100vh",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      {/* AppBar superior */}
+      <AppBar position="static" sx={{ bgcolor: "#FFFFFF" }}>
+        <Toolbar sx={{ justifyContent: "space-between" }}>
+          <Box display="flex" alignItems="center">
+            <WbSunnyIcon sx={{ color: "#202027", mr: 1 }} />
+            <Typography
+              variant="h6"
+              sx={{ color: "#202027", fontWeight: "bold" }}
+            >
+              SGPUF
+            </Typography>
+          </Box>
+          <Box sx={{ display: "flex", gap: 2 }}>
+            <Button
+              component={RouterLink}
+              to="/projetos"
+              sx={{
+                color: "#202027",
+                "&:hover": {
+                  color: "#6b9d30",
+                  backgroundColor: "transparent",
+                },
+              }}
+            >
+              Projetos
+            </Button>
+            <Button
+              component={RouterLink}
+              to="/unidades"
+              sx={{
+                color: "#202027",
+                "&:hover": {
+                  color: "#6b9d30",
+                  backgroundColor: "transparent",
+                },
+              }}
+            >
+              Unidades Consumidoras
+            </Button>
+            <Button
+              component={RouterLink}
+              to="/vistorias"
+              sx={{
+                color: "#202027",
+                "&:hover": {
+                  color: "#6b9d30",
+                  backgroundColor: "transparent",
+                },
+              }}
+            >
+              Vistorias
+            </Button>
+          </Box>
         </Toolbar>
       </AppBar>
 
-      <Drawer
-        variant="permanent"
+      {/* Título da Página */}
+      {pageTitle && <PageHeader title={pageTitle} />}
+
+      {/* Conteúdo */}
+      <Container sx={{ flex: 1, mt: 4 }}>{children}</Container>
+
+      {/* Rodapé */}
+      <Box
         sx={{
-          width: drawerWidth,
-          flexShrink: 0,
-          [`& .MuiDrawer-paper`]: { width: drawerWidth, boxSizing: 'border-box' },
+          bgcolor: "#202027",
+          color: "#fff",
+          py: 2,
+          mt: 6,
+          borderTopLeftRadius: "30px",
+          borderTopRightRadius: "30px",
         }}
       >
-        <Toolbar />
-        <List>
-          <ListItem button component={Link} to="/">
-            <ListItemText primary="Dashboard" />
-          </ListItem>
-          <ListItem button component={Link} to="/projetos">
-            <ListItemText primary="Projetos" />
-          </ListItem>
-          <ListItem button component={Link} to="/clientes">
-            <ListItemText primary="Clientes" />
-          </ListItem>
-        </List>
-      </Drawer>
-
-      <Box component="main" sx={{ flexGrow: 1, p: 3 }}>
-        <Toolbar />
-        {children}
+        <Container
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            gap: 1,
+          }}
+        >
+          <Box sx={{ display: "flex", gap: 3, fontSize: 14 }}>
+            <Typography variant="body2">Sobre nós</Typography>
+            <Typography variant="body2">Serviços</Typography>
+            <Typography variant="body2">Preços</Typography>
+            <Typography variant="body2">Blog</Typography>
+          </Box>
+          <Box sx={{ mt: 1, display: "flex", gap: 2 }}>
+            <Instagram fontSize="small" />
+            <Facebook fontSize="small" />
+            <Twitter fontSize="small" />
+          </Box>
+        </Container>
       </Box>
     </Box>
   );

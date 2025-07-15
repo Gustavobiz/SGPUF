@@ -1,12 +1,11 @@
-// src/pages/Projetos.jsx
 import Layout from "../layouts/Layout";
 import { Typography } from "@mui/material";
 
-export default function Projetos() {
+export default function Unidades() {
   return (
-    <Layout pageTitle="Lista de Projetos">
+    <Layout pageTitle="Cadastrar Unidade Consumidora">
       <Typography variant="h3" color="primary">
-        🚀 Entrou na página de Projetos
+        🚀 <div>Unidades</div>
       </Typography>
     </Layout>
   );
