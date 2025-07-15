@@ -7,11 +7,9 @@ export default function PageHeader({ title }) {
         backgroundColor: "#202027",
         color: "#eeefed",
         padding: "8px 16px",
-        borderTopLeftRadius: 4,
-        borderTopRightRadius: 4,
       }}
     >
-      <Typography variant="subtitle1" fontWeight="bold">
+      <Typography variant="h5" fontWeight="bold">
         {title}
       </Typography>
     </Box>

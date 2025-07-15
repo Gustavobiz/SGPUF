@@ -3,7 +3,7 @@ import { Typography } from "@mui/material";
 
 export default function Unidades() {
   return (
-    <Layout>
+    <Layout pageTitle="Cadastrar Unidade Consumidora">
       <Typography variant="h3" color="primary">
         🚀 <div>Unidades</div>
       </Typography>

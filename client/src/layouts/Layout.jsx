@@ -1,4 +1,5 @@
 // src/layouts/Layout.jsx
+// src/layouts/Layout.jsx
 import {
   AppBar,
   Toolbar,
@@ -9,12 +10,10 @@ import {
 } from "@mui/material";
 import { Instagram, Facebook, Twitter } from "@mui/icons-material";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
-import Logo from "../assets/logo.svg";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
+import PageHeader from "../components/PageHeader"; // importe o componente de título
 
-<WbSunnyIcon sx={{ color: "#202027", fontSize: 32 }} />;
-
-export default function Layout({ children }) {
+export default function Layout({ children, pageTitle }) {
   const navigate = useNavigate();
 
   return (
@@ -46,7 +45,7 @@ export default function Layout({ children }) {
                 color: "#202027",
                 "&:hover": {
                   color: "#6b9d30",
-                  backgroundColor: "transparent", // mantém sem fundo
+                  backgroundColor: "transparent",
                 },
               }}
             >
@@ -81,6 +80,9 @@ export default function Layout({ children }) {
           </Box>
         </Toolbar>
       </AppBar>
+
+      {/* Título da Página */}
+      {pageTitle && <PageHeader title={pageTitle} />}
 
       {/* Conteúdo */}
       <Container sx={{ flex: 1, mt: 4 }}>{children}</Container>
