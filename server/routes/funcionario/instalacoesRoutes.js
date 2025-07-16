@@ -64,15 +64,12 @@ router.patch("/:projetoId", autenticar, async (req, res) => {
   const { Execucao_inicio, Execucao_fim } = req.body;
 
   if (!Execucao_inicio || !Execucao_fim) {
-    return res
-      .status(400)
-      .json({
-        error: "As datas de início e fim da execução são obrigatórias.",
-      });
+    return res.status(400).json({
+      error: "As datas de início e fim da execução são obrigatórias.",
+    });
   }
 
   try {
-    // 1. Atualiza a tabela de instalação com as novas datas e novo status
     const sqlUpdateInstalacao = `
       UPDATE \`Instalação\` 
       SET Execucao_inicio = ?, Execucao_fim = ?, Status = ? 
@@ -89,15 +86,11 @@ router.patch("/:projetoId", autenticar, async (req, res) => {
       ]);
 
     if (result.affectedRows === 0) {
-      return res
-        .status(404)
-        .json({
-          error:
-            "Nenhum agendamento de instalação encontrado para este projeto.",
-        });
+      return res.status(404).json({
+        error: "Nenhum agendamento de instalação encontrado para este projeto.",
+      });
     }
 
-    // 2. (Opcional, mas recomendado) Atualiza o status do projeto principal
     const sqlUpdateProjeto =
       "UPDATE Projeto SET Status = ? WHERE idProjeto = ?";
     await connection

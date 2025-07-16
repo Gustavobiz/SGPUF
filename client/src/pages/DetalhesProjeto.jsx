@@ -26,10 +26,13 @@ export default function DetalhesProjeto() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-
+  const [exibirFormularioExecucao, setExibirFormularioExecucao] =
+    useState(false);
+  const [execucaoData, setExecucaoData] = useState({
+    execucao_inicio: "",
+    execucao_fim: "",
+  });
   const [vistoriaData, setVistoriaData] = useState({ Lmax: "", Vmax: "" });
-
-  // Estado para controlar a visibilidade do formulário de agendamento
   const [exibirFormularioAgendamento, setExibirFormularioAgendamento] =
     useState(false);
   const [previsaoData, setPrevisaoData] = useState({
@@ -90,23 +93,19 @@ export default function DetalhesProjeto() {
   const handleAgendarSubmit = async (e) => {
     e.preventDefault();
 
-    // 1. PREPARAMOS O ESTADO PARA O ENVIO (APENAS UMA VEZ)
     setIsSubmitting(true);
     setError("");
     setSuccess("");
 
-    // 2. CRIAMOS A VARIÁVEL COM OS DADOS CORRETOS
     const dadosParaEnviar = {
       Previsão_inicio: previsaoData.previsao_inicio,
       Previsão_fim: previsaoData.previsao_fim,
       Projeto_idProjeto: id,
     };
 
-    // DEBUG: Mostra no console exatamente o que será enviado
     console.log("DADOS SENDO ENVIADOS PARA O BACKEND:", dadosParaEnviar);
 
     try {
-      // 3. ENVIAMOS A VARIÁVEL QUE ACABAMOS DE CRIAR
       await axios.post(
         `${import.meta.env.VITE_API_URL}/instalacoes`,
         dadosParaEnviar,
@@ -117,13 +116,47 @@ export default function DetalhesProjeto() {
       setExibirFormularioAgendamento(false); // Esconde o formulário
       fetchProjectData(); // Atualiza os dados na tela
     } catch (err) {
-      // Log de erro mais detalhado para o caso de ainda falhar
       console.error("ERRO DETALHADO DO AXIOS:", err.response);
       setError(err.response?.data?.message || "Erro ao agendar instalação.");
     } finally {
       setIsSubmitting(false);
     }
   };
+
+  // Funções para controlar o formulário de EXECUÇÃO
+  const handleExibirFormularioExecucao = () =>
+    setExibirFormularioExecucao(true);
+  const handleEsconderFormularioExecucao = () =>
+    setExibirFormularioExecucao(false);
+
+  const handleExecucaoChange = (e) => {
+    setExecucaoData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleExecucaoSubmit = async (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+    setError("");
+    setSuccess("");
+    try {
+      await axios.patch(
+        `${import.meta.env.VITE_API_URL}/instalacoes/${id}`,
+        {
+          Execucao_inicio: execucaoData.execucao_inicio,
+          Execucao_fim: execucaoData.execucao_fim,
+        },
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      setSuccess("Execução da instalação registrada com sucesso!");
+      setExibirFormularioExecucao(false); // Esconde o formulário
+      fetchProjectData(); // Atualiza a tela
+    } catch (err) {
+      setError(err.response?.data?.message || "Erro ao registrar execução.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
   const handleSubmitVistoria = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -182,39 +215,6 @@ export default function DetalhesProjeto() {
                   Concessionária: {projeto.ConcessionariaNome}
                 </Typography>
                 <Divider sx={{ my: 2 }} />
-
-                <Typography variant="h6" gutterBottom>
-                  Agendamento e Execução
-                </Typography>
-                <Typography>
-                  <b>Previsão de Início:</b>{" "}
-                  {projeto.PrevisaoInicio
-                    ? new Date(projeto.PrevisaoInicio).toLocaleDateString(
-                        "pt-BR"
-                      )
-                    : "Pendente"}
-                </Typography>
-                <Typography>
-                  <b>Previsão de Fim:</b>{" "}
-                  {projeto.PrevisaoFim
-                    ? new Date(projeto.PrevisaoFim).toLocaleDateString("pt-BR")
-                    : "Pendente"}
-                </Typography>
-                <Typography>
-                  <b>Início da Execução:</b>{" "}
-                  {projeto.ExecucaoInicio
-                    ? new Date(projeto.ExecucaoInicio).toLocaleDateString(
-                        "pt-BR"
-                      )
-                    : "Pendente"}
-                </Typography>
-                <Typography>
-                  <b>Fim da Execução:</b>{" "}
-                  {projeto.ExecucaoFim
-                    ? new Date(projeto.ExecucaoFim).toLocaleDateString("pt-BR")
-                    : "Pendente"}
-                </Typography>
-                <Divider sx={{ my: 3 }} />
 
                 <Typography variant="h6" gutterBottom>
                   Unidade Consumidora
@@ -305,17 +305,79 @@ export default function DetalhesProjeto() {
             )}
 
             {/* Botões para INICIAR e FINALIZAR a instalação (aparecem após agendamento) */}
-            {projeto?.PrevisaoInicio && (
-              <Box display="flex" justifyContent="flex-end" gap={2} mb={2}>
-                {!projeto.ExecucaoInicio && (
-                  <Button variant="contained">Iniciar Execução</Button>
-                )}
-                {projeto.ExecucaoInicio && !projeto.ExecucaoFim && (
-                  <Button variant="contained" color="warning">
-                    Finalizar Execução
+            {projeto?.PrevisaoInicio &&
+              !projeto.ExecucaoInicio &&
+              !exibirFormularioExecucao && (
+                <Box display="flex" justifyContent="flex-end" mb={2}>
+                  <Button
+                    variant="contained"
+                    onClick={handleExibirFormularioExecucao}
+                  >
+                    Registrar Execução
                   </Button>
-                )}
-              </Box>
+                </Box>
+              )}
+
+            {/* Formulário de registro de execução */}
+            {exibirFormularioExecucao && (
+              <Card sx={{ borderRadius: "12px", boxShadow: 3, my: 4 }}>
+                <CardContent>
+                  <Typography variant="h5" fontWeight="bold" gutterBottom>
+                    Registrar Datas de Execução
+                  </Typography>
+                  <form onSubmit={handleExecucaoSubmit}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 2,
+                        mt: 2,
+                      }}
+                    >
+                      <TextField
+                        name="execucao_inicio"
+                        label="Início da Execução"
+                        type="date"
+                        InputLabelProps={{ shrink: true }}
+                        onChange={handleExecucaoChange}
+                        required
+                        fullWidth
+                      />
+                      <TextField
+                        name="execucao_fim"
+                        label="Fim da Execução"
+                        type="date"
+                        InputLabelProps={{ shrink: true }}
+                        onChange={handleExecucaoChange}
+                        required
+                        fullWidth
+                      />
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "flex-end",
+                          gap: 2,
+                          mt: 1,
+                        }}
+                      >
+                        <Button
+                          onClick={handleEsconderFormularioExecucao}
+                          color="secondary"
+                        >
+                          Cancelar
+                        </Button>
+                        <Button
+                          type="submit"
+                          variant="contained"
+                          disabled={isSubmitting}
+                        >
+                          {isSubmitting ? "Salvando..." : "Salvar Execução"}
+                        </Button>
+                      </Box>
+                    </Box>
+                  </form>
+                </CardContent>
+              </Card>
             )}
 
             {/* Ações específicas do GERENTE */}
@@ -346,11 +408,9 @@ export default function DetalhesProjeto() {
           {/* Visão do ENGENHEIRO*/}
           {tipo === "engenheiro" && (
             <Box mt={2}>
-              {" "}
-              {/* Adicionado um espaçamento para não colar nos botões de cima */}
-              {projeto && projeto.ExecucaoFim ? (
-                projeto.Status !== "Vistoriado" &&
-                projeto.Status !== "Aprovado" ? (
+              {projeto?.PrevisaoInicio ? (
+                projeto.Status !== "vistoriado" &&
+                projeto.Status !== "aprovado" ? (
                   <Card sx={{ borderRadius: "12px", boxShadow: 3 }}>
                     <CardContent>
                       <Typography variant="h5" fontWeight="bold" gutterBottom>
