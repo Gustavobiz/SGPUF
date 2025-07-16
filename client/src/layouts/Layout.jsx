@@ -74,7 +74,7 @@ export default function Layout({ children, pageTitle }) {
             </Button>
             <Button
               component={RouterLink}
-              to="/cliente"
+              to="/clientes"
               sx={{
                 color: "#202027",
                 "&:hover": {
