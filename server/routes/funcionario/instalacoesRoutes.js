@@ -7,7 +7,6 @@ router.post("/", autenticar, async (req, res) => {
   const {
     Previsão_inicio,
     Previsão_fim,
-    Execução,
     Execução_inicio,
     Execução_fim,
     Projeto_idProjeto,
@@ -26,12 +25,11 @@ router.post("/", autenticar, async (req, res) => {
     // Insere a instalação com status padrão 'marcado'
     const [resultado] = await connection.promise().query(
       `INSERT INTO Instalação 
-      (Previsão_inicio, Previsão_fim, Execução, Execução_inicio, Execução_fim, Projeto_idProjeto) 
-      VALUES (?, ?, ?, ?, ?, ?)`,
+      (Previsão_inicio, Previsão_fim, Execução_inicio, Execução_fim, Projeto_idProjeto) 
+      VALUES (?, ?, ?, ?, ?)`,
       [
         Previsão_inicio,
         Previsão_fim,
-        Execução,
         Execução_inicio,
         Execução_fim,
         Projeto_idProjeto,

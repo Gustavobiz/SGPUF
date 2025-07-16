@@ -30,7 +30,7 @@ export default function Projetos() {
     } else if (tipo === "engenheiro") {
       window.location.href = `/projetos/${id}/engenheiro`;
     } else {
-      window.location.href = `/projetos/${id}`;
+      window.location.href = `/projetos/${id}/estagiario`;
     }
   };
 

@@ -110,6 +110,7 @@ router.get("/:id", autenticar, async (req, res) => {
     const [projetos] = await connection.promise().query(
       `
       SELECT 
+        P.Nome,
         P.idProjeto,
         P.Status,
         P.PreçoFinal,
@@ -127,11 +128,13 @@ router.get("/:id", autenticar, async (req, res) => {
         C.razaosocial AS ConcessionariaNome,
         C.CNPJ,
         CL.Nome AS ClienteNome,
-        CL.CPF AS ClienteCPF
+        CL.CPF AS ClienteCPF,
+        I.Execução_fim AS ExecucaoFim 
       FROM Projeto P
       JOIN \`Unidade Consumidora\` U ON P.UniConsID = U.NumeroID
       JOIN Concessionária C ON P.ConcessionáriaID = C.CNPJ
       JOIN Cliente CL ON P.Cliente_CPF = CL.CPF
+      LEFT JOIN Instalação I ON P.idProjeto = I.Projeto_idProjeto 
       WHERE P.idProjeto = ?
     `,
       [id]
@@ -147,5 +150,4 @@ router.get("/:id", autenticar, async (req, res) => {
     res.status(500).json({ error: "Erro ao buscar projeto" });
   }
 });
-
 module.exports = router;
