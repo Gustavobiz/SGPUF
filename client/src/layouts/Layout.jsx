@@ -1,5 +1,4 @@
 // src/layouts/Layout.jsx
-// src/layouts/Layout.jsx
 import {
   AppBar,
   Toolbar,
@@ -8,13 +7,19 @@ import {
   Button,
   Container,
 } from "@mui/material";
-import { Instagram, Facebook, Twitter } from "@mui/icons-material";
+import { Instagram, Facebook, Twitter, Logout } from "@mui/icons-material";
 import { Link as RouterLink, useNavigate } from "react-router-dom";
 import WbSunnyIcon from "@mui/icons-material/WbSunny";
-import PageHeader from "../components/PageHeader"; // importe o componente de título
+import PageHeader from "../components/PageHeader";
 
 export default function Layout({ children, pageTitle }) {
   const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("tipo");
+    navigate("/");
+  };
 
   return (
     <Box
@@ -28,6 +33,7 @@ export default function Layout({ children, pageTitle }) {
       {/* AppBar superior */}
       <AppBar position="static" sx={{ bgcolor: "#FFFFFF" }}>
         <Toolbar sx={{ justifyContent: "space-between" }}>
+          {/* Logo e título */}
           <Box display="flex" alignItems="center">
             <WbSunnyIcon sx={{ color: "#202027", mr: 1 }} />
             <Typography
@@ -37,7 +43,9 @@ export default function Layout({ children, pageTitle }) {
               SGPUF
             </Typography>
           </Box>
-          <Box sx={{ display: "flex", gap: 2 }}>
+
+          {/* Menu de navegação + botão sair */}
+          <Box sx={{ display: "flex", gap: 2, alignItems: "center" }}>
             <Button
               component={RouterLink}
               to="/projetos"
@@ -66,7 +74,7 @@ export default function Layout({ children, pageTitle }) {
             </Button>
             <Button
               component={RouterLink}
-              to="/vistorias"
+              to="/cliente"
               sx={{
                 color: "#202027",
                 "&:hover": {
@@ -75,7 +83,33 @@ export default function Layout({ children, pageTitle }) {
                 },
               }}
             >
-              Vistorias
+              Cliente
+            </Button>
+            <Button
+              component={RouterLink}
+              to="/concessionaria"
+              sx={{
+                color: "#202027",
+                "&:hover": {
+                  color: "#6b9d30",
+                  backgroundColor: "transparent",
+                },
+              }}
+            >
+              Concessionária
+            </Button>
+
+            {/* Botão de sair */}
+            <Button
+              onClick={handleLogout}
+              startIcon={<Logout />}
+              sx={{
+                color: "#6b9d30",
+                borderColor: "#6b9d30",
+                fontWeight: "bold",
+              }}
+            >
+              Sair
             </Button>
           </Box>
         </Toolbar>
