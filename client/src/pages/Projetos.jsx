@@ -30,9 +30,10 @@ export default function Projetos() {
     } else if (tipo === "engenheiro") {
       window.location.href = `/projetos/${id}/engenheiro`;
     } else {
-      window.location.href = `/projetos/${id}`;
+      window.location.href = `/projetos/${id}/estagiario`;
     }
   };
+
   const gerarPDFVistoria = (idVistoria) => {
     axios
       .get(`${import.meta.env.VITE_API_URL}/vistorias/pdf/${idVistoria}`, {

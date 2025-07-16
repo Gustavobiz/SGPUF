@@ -4,6 +4,9 @@ import Clientes from "../pages/Clientes";
 import Projetos from "../pages/Projetos";
 import Unidades from "../pages/Unidades";
 import Vistorias from "../pages/Vistorias";
+import ProjetoGerente from "../pages/ProjetoGerente";
+import ProjetoEstagiario from "../pages/projetoEstagiario";
+import DetalhesProjeto from "../pages/DetalhesProjeto";
 
 const PrivateRoute = ({ children }) => {
   const token = localStorage.getItem("token");
@@ -43,6 +46,30 @@ export default function AppRoutes() {
         element={
           <PrivateRoute>
             <Vistorias />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/projetos/:id/gerente"
+        element={
+          <PrivateRoute>
+            <DetalhesProjeto />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/projetos/:id/engenheiro"
+        element={
+          <PrivateRoute>
+            <DetalhesProjeto />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/projetos/:id/estagiario"
+        element={
+          <PrivateRoute>
+            <DetalhesProjeto />
           </PrivateRoute>
         }
       />
