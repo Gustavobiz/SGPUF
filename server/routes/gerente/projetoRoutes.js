@@ -150,4 +150,39 @@ router.get("/:id", autenticar, async (req, res) => {
     res.status(500).json({ error: "Erro ao buscar projeto" });
   }
 });
+
+// Rota PATCH corrigida e simplificada
+
+router.patch("/:id/status", autenticar, async (req, res) => {
+  const { id } = req.params;
+  const { status } = req.body; // Corrigido para 'status' para bater com o frontend
+
+  // Verificação para garantir que o status foi enviado
+  if (!status) {
+    return res.status(400).json({ error: "O novo status é obrigatório." });
+  }
+
+  try {
+    // Uma única query que atualiza apenas o status do projeto
+    const query = `
+      UPDATE Projeto 
+      SET Status = ? 
+      WHERE idProjeto = ?
+    `;
+    const params = [status, id];
+
+    const [resultado] = await connection.promise().query(query, params);
+
+    // Verifica se alguma linha foi realmente atualizada
+    if (resultado.affectedRows === 0) {
+      return res.status(404).json({ error: "Projeto não encontrado." });
+    }
+
+    res.json({ message: "Status atualizado com sucesso." });
+  } catch (error) {
+    console.error("Erro ao atualizar status do projeto:", error);
+    res.status(500).json({ error: "Erro ao atualizar status" });
+  }
+});
+
 module.exports = router;
