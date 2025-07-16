@@ -11,17 +11,15 @@ import Layout from "../layouts/Layout";
 import { useState } from "react";
 import axios from "axios";
 
-export default function Unidades() {
+export default function Concessionaria() {
   const token = localStorage.getItem("token");
 
   const [formData, setFormData] = useState({
-    NumeroID: "",
-    Longitude: "",
-    Latitude: "",
-    TipoCabo: "",
-    Nome: "",
-    Potência: "",
-    Bitola: "",
+    CNPJ: "",
+    telefone: "",
+    endereco: "",
+    razaosocial: "",
+    email: "",
   });
 
   const [loading, setLoading] = useState(false);
@@ -36,95 +34,84 @@ export default function Unidades() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setSuccess("");
     setError("");
+    setSuccess("");
 
     try {
-      await axios.post(`${import.meta.env.VITE_API_URL}/unidades`, formData, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      setSuccess("Unidade Consumidora cadastrada com sucesso!");
+      await axios.post(
+        `${import.meta.env.VITE_API_URL}/concessionarias`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setSuccess("Concessionária cadastrada com sucesso!");
       setFormData({
-        NumeroID: "",
-        Longitude: "",
-        Latitude: "",
-        TipoCabo: "",
-        Nome: "",
-        Potência: "",
-        Bitola: "",
+        CNPJ: "",
+        telefone: "",
+        endereco: "",
+        razaosocial: "",
+        email: "",
       });
     } catch (err) {
-      setError(
-        err.response?.data?.error || "Erro ao cadastrar unidade consumidora"
-      );
+      setError(err.response?.data?.error || "Erro ao cadastrar concessionária");
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <Layout pageTitle="Cadastrar Unidade Consumidora">
+    <Layout pageTitle="Cadastrar Concessionária">
       <Box display="flex" justifyContent="center" my={4}>
-        <Card sx={{ p: 3, width: "100%", maxWidth: 600 }}>
+        <Card
+          sx={{ p: 3, width: "100%", maxWidth: 600, backgroundColor: "#fff" }}
+        >
           <CardContent>
             <Typography variant="h5" gutterBottom fontWeight="bold">
-              Cadastro de Unidade Consumidora
+              Cadastro de Concessionária
             </Typography>
 
             <form onSubmit={handleSubmit}>
               <Box display="flex" flexDirection="column" gap={2}>
                 <TextField
-                  name="NumeroID"
-                  label="Número ID"
-                  value={formData.NumeroID}
+                  name="CNPJ"
+                  label="CNPJ"
+                  value={formData.CNPJ}
                   onChange={handleChange}
                   required
                   fullWidth
                 />
                 <TextField
-                  name="Nome"
-                  label="Nome"
-                  value={formData.Nome}
+                  name="razaosocial"
+                  label="Razão Social"
+                  value={formData.razaosocial}
                   onChange={handleChange}
                   required
                   fullWidth
                 />
                 <TextField
-                  name="Latitude"
-                  label="Latitude"
-                  value={formData.Latitude}
+                  name="telefone"
+                  label="Telefone"
+                  value={formData.telefone}
                   onChange={handleChange}
                   required
                   fullWidth
                 />
                 <TextField
-                  name="Longitude"
-                  label="Longitude"
-                  value={formData.Longitude}
+                  name="email"
+                  label="Email"
+                  type="email"
+                  value={formData.email}
                   onChange={handleChange}
                   required
                   fullWidth
                 />
                 <TextField
-                  name="Potência"
-                  label="Potência"
-                  value={formData.Potência}
-                  onChange={handleChange}
-                  required
-                  fullWidth
-                />
-                <TextField
-                  name="TipoCabo"
-                  label="Tipo de Cabo"
-                  value={formData.TipoCabo}
-                  onChange={handleChange}
-                  required
-                  fullWidth
-                />
-                <TextField
-                  name="Bitola"
-                  label="Bitola"
-                  value={formData.Bitola}
+                  name="endereco"
+                  label="Endereço"
+                  value={formData.endereco}
                   onChange={handleChange}
                   required
                   fullWidth

@@ -70,7 +70,7 @@ export default function Layout({ children, pageTitle }) {
                 },
               }}
             >
-              Unidades Consumidoras
+              Unidade Consumidora
             </Button>
             <Button
               component={RouterLink}
