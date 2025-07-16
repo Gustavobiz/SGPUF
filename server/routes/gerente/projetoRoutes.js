@@ -3,7 +3,7 @@ const router = express.Router();
 const connection = require("../../config/db");
 const { autenticar, autorizar } = require("../../middlewares/authMiddleware");
 
-// Rota: Criar projeto (somente gerente)d
+// Rota: Criar projeto (somente gerente)
 router.post("/", autenticar, autorizar("gerente"), async (req, res) => {
   const {
     Nome,
