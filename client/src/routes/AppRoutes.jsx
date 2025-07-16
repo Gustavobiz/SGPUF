@@ -6,6 +6,7 @@ import Unidades from "../pages/Unidades";
 import Vistorias from "../pages/Vistorias";
 import Concessionaria from "../pages/Concessionaria";
 import DetalhesProjeto from "../pages/DetalhesProjeto";
+import CriarProjeto from "../pages/CriarProjeto";
 
 // Middleware de rota privada
 const PrivateRoute = ({ children }) => {
@@ -41,6 +42,18 @@ export default function AppRoutes() {
         element={
           <PrivateRoute>
             <Unidades />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/projetos/novo"
+        element={
+          <PrivateRoute>
+            {localStorage.getItem("tipo") === "gerente" ? (
+              <CriarProjeto />
+            ) : (
+              <Navigate to="/projetos" />
+            )}
           </PrivateRoute>
         }
       />
