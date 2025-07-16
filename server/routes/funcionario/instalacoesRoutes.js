@@ -57,5 +57,60 @@ router.post("/", autenticar, async (req, res) => {
     res.status(500).json({ error: "Erro no servidor" });
   }
 });
+// PATCH /instalacoes/:projetoId - Para registrar a execução (início e fim)
+router.patch("/:projetoId", autenticar, async (req, res) => {
+  const { projetoId } = req.params;
+  // Pega as datas de execução do corpo da requisição
+  const { Execucao_inicio, Execucao_fim } = req.body;
+
+  if (!Execucao_inicio || !Execucao_fim) {
+    return res
+      .status(400)
+      .json({
+        error: "As datas de início e fim da execução são obrigatórias.",
+      });
+  }
+
+  try {
+    // 1. Atualiza a tabela de instalação com as novas datas e novo status
+    const sqlUpdateInstalacao = `
+      UPDATE \`Instalação\` 
+      SET Execucao_inicio = ?, Execucao_fim = ?, Status = ? 
+      WHERE Projeto_idProjeto = ?
+    `;
+    const statusExecucao = "Concluída";
+    const [result] = await connection
+      .promise()
+      .query(sqlUpdateInstalacao, [
+        Execucao_inicio,
+        Execucao_fim,
+        statusExecucao,
+        projetoId,
+      ]);
+
+    if (result.affectedRows === 0) {
+      return res
+        .status(404)
+        .json({
+          error:
+            "Nenhum agendamento de instalação encontrado para este projeto.",
+        });
+    }
+
+    // 2. (Opcional, mas recomendado) Atualiza o status do projeto principal
+    const sqlUpdateProjeto =
+      "UPDATE Projeto SET Status = ? WHERE idProjeto = ?";
+    await connection
+      .promise()
+      .query(sqlUpdateProjeto, ["Instalação Concluída", projetoId]);
+
+    res
+      .status(200)
+      .json({ message: "Execução da instalação registrada com sucesso!" });
+  } catch (error) {
+    console.error("Erro ao registrar execução da instalação:", error);
+    res.status(500).json({ error: "Erro interno do servidor" });
+  }
+});
 
 module.exports = router;

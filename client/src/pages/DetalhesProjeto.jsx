@@ -17,7 +17,6 @@ import Layout from "../layouts/Layout";
 import axios from "axios";
 
 export default function DetalhesProjeto() {
-  // --- TODA A LÓGICA DE ESTADOS E FUNÇÕES CONTINUA AQUI (sem alterações) ---
   const { id } = useParams();
   const token = localStorage.getItem("token");
   const tipo = localStorage.getItem("tipo");
@@ -29,6 +28,14 @@ export default function DetalhesProjeto() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const [vistoriaData, setVistoriaData] = useState({ Lmax: "", Vmax: "" });
+
+  // Estado para controlar a visibilidade do formulário de agendamento
+  const [exibirFormularioAgendamento, setExibirFormularioAgendamento] =
+    useState(false);
+  const [previsaoData, setPrevisaoData] = useState({
+    previsao_inicio: "",
+    previsao_fim: "",
+  });
 
   const fetchProjectData = () => {
     setLoading(true);
@@ -72,7 +79,51 @@ export default function DetalhesProjeto() {
     const { name, value } = e.target;
     setVistoriaData((prev) => ({ ...prev, [name]: value }));
   };
+  // Funções para controlar o formulário de agendamento
+  const handleExibirFormulario = () => setExibirFormularioAgendamento(true);
+  const handleEsconderFormulario = () => setExibirFormularioAgendamento(false);
 
+  const handlePrevisaoChange = (e) => {
+    setPrevisaoData((prev) => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleAgendarSubmit = async (e) => {
+    e.preventDefault();
+
+    // 1. PREPARAMOS O ESTADO PARA O ENVIO (APENAS UMA VEZ)
+    setIsSubmitting(true);
+    setError("");
+    setSuccess("");
+
+    // 2. CRIAMOS A VARIÁVEL COM OS DADOS CORRETOS
+    const dadosParaEnviar = {
+      Previsão_inicio: previsaoData.previsao_inicio,
+      Previsão_fim: previsaoData.previsao_fim,
+      Projeto_idProjeto: id,
+    };
+
+    // DEBUG: Mostra no console exatamente o que será enviado
+    console.log("DADOS SENDO ENVIADOS PARA O BACKEND:", dadosParaEnviar);
+
+    try {
+      // 3. ENVIAMOS A VARIÁVEL QUE ACABAMOS DE CRIAR
+      await axios.post(
+        `${import.meta.env.VITE_API_URL}/instalacoes`,
+        dadosParaEnviar,
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+
+      setSuccess("Instalação agendada com sucesso!");
+      setExibirFormularioAgendamento(false); // Esconde o formulário
+      fetchProjectData(); // Atualiza os dados na tela
+    } catch (err) {
+      // Log de erro mais detalhado para o caso de ainda falhar
+      console.error("ERRO DETALHADO DO AXIOS:", err.response);
+      setError(err.response?.data?.message || "Erro ao agendar instalação.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
   const handleSubmitVistoria = async (e) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -130,7 +181,39 @@ export default function DetalhesProjeto() {
                 <Typography>
                   Concessionária: {projeto.ConcessionariaNome}
                 </Typography>
+                <Divider sx={{ my: 2 }} />
 
+                <Typography variant="h6" gutterBottom>
+                  Agendamento e Execução
+                </Typography>
+                <Typography>
+                  <b>Previsão de Início:</b>{" "}
+                  {projeto.PrevisaoInicio
+                    ? new Date(projeto.PrevisaoInicio).toLocaleDateString(
+                        "pt-BR"
+                      )
+                    : "Pendente"}
+                </Typography>
+                <Typography>
+                  <b>Previsão de Fim:</b>{" "}
+                  {projeto.PrevisaoFim
+                    ? new Date(projeto.PrevisaoFim).toLocaleDateString("pt-BR")
+                    : "Pendente"}
+                </Typography>
+                <Typography>
+                  <b>Início da Execução:</b>{" "}
+                  {projeto.ExecucaoInicio
+                    ? new Date(projeto.ExecucaoInicio).toLocaleDateString(
+                        "pt-BR"
+                      )
+                    : "Pendente"}
+                </Typography>
+                <Typography>
+                  <b>Fim da Execução:</b>{" "}
+                  {projeto.ExecucaoFim
+                    ? new Date(projeto.ExecucaoFim).toLocaleDateString("pt-BR")
+                    : "Pendente"}
+                </Typography>
                 <Divider sx={{ my: 3 }} />
 
                 <Typography variant="h6" gutterBottom>
@@ -147,10 +230,93 @@ export default function DetalhesProjeto() {
           )}
 
           <Box display="flex" gap={2} flexWrap="wrap" justifyContent="flex-end">
-            {/* Botão "Marcar Instalação"*/}
-            <Button variant="outlined" color="success">
-              Marcar Instalação
-            </Button>
+            {/* Botão "Marcar Instalação" ou o formulário, aparecem condicionalmente */}
+            {!projeto?.PrevisaoInicio && !exibirFormularioAgendamento && (
+              <Box display="flex" justifyContent="flex-end" mb={2}>
+                <Button
+                  variant="outlined"
+                  color="success"
+                  onClick={handleExibirFormulario}
+                >
+                  Marcar Instalação
+                </Button>
+              </Box>
+            )}
+
+            {exibirFormularioAgendamento && (
+              <Card sx={{ borderRadius: "12px", boxShadow: 3, my: 4 }}>
+                <CardContent>
+                  <Typography variant="h5" fontWeight="bold" gutterBottom>
+                    Agendar Previsão da Instalação
+                  </Typography>
+                  <form onSubmit={handleAgendarSubmit}>
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        gap: 2,
+                        mt: 2,
+                      }}
+                    >
+                      <TextField
+                        name="previsao_inicio"
+                        label="Previsão de Início"
+                        type="date"
+                        InputLabelProps={{ shrink: true }}
+                        onChange={handlePrevisaoChange}
+                        required
+                        fullWidth
+                      />
+                      <TextField
+                        name="previsao_fim"
+                        label="Previsão de Fim"
+                        type="date"
+                        InputLabelProps={{ shrink: true }}
+                        onChange={handlePrevisaoChange}
+                        required
+                        fullWidth
+                      />
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "flex-end",
+                          gap: 2,
+                          mt: 1,
+                        }}
+                      >
+                        <Button
+                          onClick={handleEsconderFormulario}
+                          color="secondary"
+                        >
+                          Cancelar
+                        </Button>
+                        <Button
+                          type="submit"
+                          variant="contained"
+                          disabled={isSubmitting}
+                        >
+                          {isSubmitting ? "Agendando..." : "Agendar"}
+                        </Button>
+                      </Box>
+                    </Box>
+                  </form>
+                </CardContent>
+              </Card>
+            )}
+
+            {/* Botões para INICIAR e FINALIZAR a instalação (aparecem após agendamento) */}
+            {projeto?.PrevisaoInicio && (
+              <Box display="flex" justifyContent="flex-end" gap={2} mb={2}>
+                {!projeto.ExecucaoInicio && (
+                  <Button variant="contained">Iniciar Execução</Button>
+                )}
+                {projeto.ExecucaoInicio && !projeto.ExecucaoFim && (
+                  <Button variant="contained" color="warning">
+                    Finalizar Execução
+                  </Button>
+                )}
+              </Box>
+            )}
 
             {/* Ações específicas do GERENTE */}
             {tipo === "gerente" && (
