@@ -44,17 +44,15 @@ router.post("/", autenticar, autorizar("gerente"), async (req, res) => {
 
     const [result] = await connection.promise().query(
       `INSERT INTO Projeto 
-       (Nome, Status, PreçoFinal,VOC, Isc, Lmax, Vmax, Data_Solicitaçao, UniConsID, ConcessionáriaID, Cliente_CPF)
-       VALUES (?,?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+   (Nome, Status, PreçoFinal, VOC, Isc, Lmax, Vmax, Data_Solicitaçao, UniConsID, ConcessionáriaID, Cliente_CPF)
+   VALUES (?, 'em análise', ?, ?, ?, ?, ?, NOW(), ?, ?, ?)`,
       [
         Nome,
-        Status,
         PreçoFinal,
         VOC,
         Isc,
         Lmax,
         Vmax,
-        Data_Solicitaçao,
         UniConsID,
         ConcessionáriaID,
         Cliente_CPF,
