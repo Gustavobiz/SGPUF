@@ -8,7 +8,7 @@ import {
   CircularProgress,
   Alert,
 } from "@mui/material";
-import Layout from "../layouts/Layout";
+import Layout from "../../layouts/Layout";
 import axios from "axios";
 
 export default function ProjetoGerente() {

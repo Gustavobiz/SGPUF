@@ -4,11 +4,13 @@ import Layout from "../layouts/Layout";
 import { useEffect, useState } from "react";
 import axios from "axios";
 import DescriptionIcon from "@mui/icons-material/Description";
+import { useNavigate } from "react-router-dom";
 
 export default function Projetos() {
   const tipo = localStorage.getItem("tipo");
   const token = localStorage.getItem("token");
   const [projetos, setProjetos] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios
@@ -83,9 +85,21 @@ export default function Projetos() {
   return (
     <Layout pageTitle="Lista de Projetos">
       <Box display="flex" flexDirection="column" gap={2}>
+        {tipo === "gerente" && (
+          <Box display="flex" justifyContent="flex-end" mb={2}>
+            <Button
+              variant="contained"
+              color="success"
+              onClick={() => navigate("/projetos/novo")}
+            >
+              Criar Projeto
+            </Button>
+          </Box>
+        )}
+
         {projetos.map((projeto) => (
           <Card
-            key={projeto.idProjeto}
+            key={`${projeto.idProjeto}-${projeto.idVistoria ?? "semVistoria"}`}
             sx={{
               p: 2,
               borderRadius: "10px",
@@ -93,14 +107,11 @@ export default function Projetos() {
               boxShadow: 1,
             }}
           >
-            {/* Área do ícone + conteúdo alinhado */}
             <Box sx={{ display: "flex" }}>
-              {/* Ícone */}
               <Box sx={{ pt: 0.5 }}>
                 <DescriptionIcon sx={{ color: "#202027", fontSize: 28 }} />
               </Box>
 
-              {/* Conteúdo à direita */}
               <Box sx={{ ml: 2, flex: 1 }}>
                 <Typography variant="h6" fontWeight="bold">
                   {projeto.Nome}
@@ -111,7 +122,6 @@ export default function Projetos() {
                   Cliente: {projeto.ClienteNome}
                 </Typography>
 
-                {/* Botões alinhados */}
                 <Box sx={{ display: "flex", gap: 2, flexWrap: "wrap", mt: 2 }}>
                   <Button
                     variant="contained"
@@ -124,6 +134,7 @@ export default function Projetos() {
                   >
                     GERAR HOMOLOGAÇÃO
                   </Button>
+
                   {podeVistoriar(projeto.Status) && projeto.idVistoria && (
                     <Button
                       variant="contained"

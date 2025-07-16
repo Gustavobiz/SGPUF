@@ -1,5 +1,5 @@
 import { Box, Button, Typography, Divider } from "@mui/material";
-import Layout from "../layouts/Layout";
+import Layout from "../../layouts/Layout";
 
 export default function ProjetoGerente() {
   const projeto = {

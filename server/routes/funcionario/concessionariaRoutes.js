@@ -8,7 +8,7 @@ router.post("/", autenticar, async (req, res) => {
 
   try {
     await connection.promise().query(
-      `INSERT INTO Concessionária (CNPJ, telefone, endereço, razaosocial, email)
+      `INSERT INTO \`Concessionária\` (CNPJ, telefone, endereço, razaosocial, email)
        VALUES (?, ?, ?, ?, ?)`,
       [CNPJ, telefone, endereco, razaosocial, email]
     );
@@ -16,6 +16,18 @@ router.post("/", autenticar, async (req, res) => {
   } catch (error) {
     console.error("Erro ao cadastrar concessionária:", error);
     res.status(500).json({ error: "Erro ao cadastrar concessionária" });
+  }
+});
+
+router.get("/", autenticar, async (req, res) => {
+  try {
+    const [rows] = await connection
+      .promise()
+      .query("SELECT CNPJ, razaosocial FROM `Concessionária`");
+    res.json(rows);
+  } catch (error) {
+    console.error("Erro ao buscar concessionárias:", error);
+    res.status(500).json({ error: "Erro ao buscar concessionárias" });
   }
 });
 

@@ -61,5 +61,17 @@ router.get("/:codigoCliente/projetos", autenticar, async (req, res) => {
     res.status(500).json({ error: "Erro ao buscar projetos" });
   }
 });
+// Buscar todos os clientes
+router.get("/", autenticar, async (req, res) => {
+  try {
+    const [rows] = await connection
+      .promise()
+      .query("SELECT CPF, Nome FROM Cliente");
+    res.json(rows);
+  } catch (error) {
+    console.error("Erro ao buscar clientes:", error);
+    res.status(500).json({ error: "Erro ao buscar clientes" });
+  }
+});
 
 module.exports = router;

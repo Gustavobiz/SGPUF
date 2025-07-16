@@ -22,5 +22,16 @@ router.post("/", autenticar, async (req, res) => {
     res.status(500).json({ error: "Erro ao cadastrar unidade" });
   }
 });
+router.get("/", autenticar, async (req, res) => {
+  try {
+    const [rows] = await connection
+      .promise()
+      .query("SELECT NumeroID, Nome FROM `Unidade Consumidora`");
+    res.json(rows);
+  } catch (error) {
+    console.error("Erro ao buscar unidades:", error);
+    res.status(500).json({ error: "Erro ao buscar unidades" });
+  }
+});
 
 module.exports = router;

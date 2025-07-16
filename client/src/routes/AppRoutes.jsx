@@ -1,13 +1,14 @@
-import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { Routes, Route, Navigate } from "react-router-dom";
 import AuthContainer from "../components/AuthContainer";
 import Clientes from "../pages/Clientes";
 import Projetos from "../pages/Projetos";
 import Unidades from "../pages/Unidades";
 import Vistorias from "../pages/Vistorias";
-import ProjetoGerente from "../pages/ProjetoGerente";
-import ProjetoEstagiario from "../pages/projetoEstagiario";
+import Concessionaria from "../pages/Concessionaria";
 import DetalhesProjeto from "../pages/DetalhesProjeto";
+import CriarProjeto from "../pages/CriarProjeto";
 
+// Middleware de rota privada
 const PrivateRoute = ({ children }) => {
   const token = localStorage.getItem("token");
   return token ? children : <Navigate to="/" />;
@@ -17,6 +18,7 @@ export default function AppRoutes() {
   return (
     <Routes>
       <Route path="/" element={<AuthContainer />} />
+
       <Route
         path="/projetos"
         element={
@@ -25,6 +27,7 @@ export default function AppRoutes() {
           </PrivateRoute>
         }
       />
+
       <Route
         path="/clientes"
         element={
@@ -33,6 +36,7 @@ export default function AppRoutes() {
           </PrivateRoute>
         }
       />
+
       <Route
         path="/unidades"
         element={
@@ -42,6 +46,19 @@ export default function AppRoutes() {
         }
       />
       <Route
+        path="/projetos/novo"
+        element={
+          <PrivateRoute>
+            {localStorage.getItem("tipo") === "gerente" ? (
+              <CriarProjeto />
+            ) : (
+              <Navigate to="/projetos" />
+            )}
+          </PrivateRoute>
+        }
+      />
+
+      <Route
         path="/vistorias"
         element={
           <PrivateRoute>
@@ -49,24 +66,19 @@ export default function AppRoutes() {
           </PrivateRoute>
         }
       />
+
       <Route
-        path="/projetos/:id/gerente"
+        path="/concessionaria"
         element={
           <PrivateRoute>
-            <DetalhesProjeto />
+            <Concessionaria />
           </PrivateRoute>
         }
       />
+
+      {/* Rota dinâmica para Detalhes do Projeto */}
       <Route
-        path="/projetos/:id/engenheiro"
-        element={
-          <PrivateRoute>
-            <DetalhesProjeto />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="/projetos/:id/estagiario"
+        path="/projetos/:id/:tipo"
         element={
           <PrivateRoute>
             <DetalhesProjeto />
