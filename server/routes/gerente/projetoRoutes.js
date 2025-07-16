@@ -185,5 +185,34 @@ router.patch("/:id/status", autenticar, async (req, res) => {
     res.status(500).json({ error: "Erro ao atualizar status" });
   }
 });
+router.delete("/:id", autenticar, autorizar("gerente"), async (req, res) => {
+  const id = req.params.id;
+
+  try {
+    // Apagar referências em tabelas dependentes primeiro
+    await connection
+      .promise()
+      .query("DELETE FROM Revisa WHERE IDProjeto = ?", [id]);
+    await connection
+      .promise()
+      .query("DELETE FROM Aprova WHERE Projeto_idProjeto = ?", [id]);
+    await connection
+      .promise()
+      .query("DELETE FROM Homologa WHERE Projeto_idProjeto = ?", [id]);
+    await connection
+      .promise()
+      .query("DELETE FROM Instalação WHERE Projeto_idProjeto = ?", [id]);
+
+    // Por fim, apagar o projeto
+    await connection
+      .promise()
+      .query("DELETE FROM Projeto WHERE idProjeto = ?", [id]);
+
+    res.status(200).json({ message: "Projeto deletado com sucesso." });
+  } catch (error) {
+    console.error("Erro ao deletar projeto:", error);
+    res.status(500).json({ error: "Erro ao deletar projeto." });
+  }
+});
 
 module.exports = router;
