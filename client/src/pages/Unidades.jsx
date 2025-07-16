@@ -7,15 +7,14 @@ import {
   Typography,
   Alert,
 } from "@mui/material";
-import Layout from "../layouts/Layout";
 import { useState } from "react";
+import Layout from "../layouts/Layout";
 import axios from "axios";
 
 export default function Unidades() {
   const token = localStorage.getItem("token");
 
   const [formData, setFormData] = useState({
-    NumeroID: "",
     Longitude: "",
     Latitude: "",
     TipoCabo: "",
@@ -24,9 +23,9 @@ export default function Unidades() {
     Bitola: "",
   });
 
-  const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState("");
   const [error, setError] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -35,9 +34,9 @@ export default function Unidades() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    setLoading(true);
-    setSuccess("");
     setError("");
+    setSuccess("");
+    setIsSubmitting(true);
 
     try {
       await axios.post(`${import.meta.env.VITE_API_URL}/unidades`, formData, {
@@ -45,7 +44,6 @@ export default function Unidades() {
       });
       setSuccess("Unidade Consumidora cadastrada com sucesso!");
       setFormData({
-        NumeroID: "",
         Longitude: "",
         Latitude: "",
         TipoCabo: "",
@@ -54,40 +52,29 @@ export default function Unidades() {
         Bitola: "",
       });
     } catch (err) {
-      setError(
-        err.response?.data?.error || "Erro ao cadastrar unidade consumidora"
-      );
+      setError(err.response?.data?.message || "Erro ao cadastrar unidade.");
     } finally {
-      setLoading(false);
+      setIsSubmitting(false);
     }
   };
 
   return (
     <Layout pageTitle="Cadastrar Unidade Consumidora">
-      <Box display="flex" justifyContent="center" my={4}>
-        <Card sx={{ p: 3, width: "100%", maxWidth: 600 }}>
+      <Box display="flex" justifyContent="center">
+        <Card sx={{ width: "100%", maxWidth: 600, backgroundColor: "#fff" }}>
           <CardContent>
-            <Typography variant="h5" gutterBottom fontWeight="bold">
-              Cadastro de Unidade Consumidora
+            <Typography variant="h5" fontWeight="bold" gutterBottom>
+              Nova Unidade Consumidora
             </Typography>
 
             <form onSubmit={handleSubmit}>
               <Box display="flex" flexDirection="column" gap={2}>
-                <TextField
-                  name="NumeroID"
-                  label="Número ID"
-                  value={formData.NumeroID}
-                  onChange={handleChange}
-                  required
-                  fullWidth
-                />
                 <TextField
                   name="Nome"
                   label="Nome"
                   value={formData.Nome}
                   onChange={handleChange}
                   required
-                  fullWidth
                 />
                 <TextField
                   name="Latitude"
@@ -95,7 +82,6 @@ export default function Unidades() {
                   value={formData.Latitude}
                   onChange={handleChange}
                   required
-                  fullWidth
                 />
                 <TextField
                   name="Longitude"
@@ -103,53 +89,39 @@ export default function Unidades() {
                   value={formData.Longitude}
                   onChange={handleChange}
                   required
-                  fullWidth
-                />
-                <TextField
-                  name="Potência"
-                  label="Potência"
-                  value={formData.Potência}
-                  onChange={handleChange}
-                  required
-                  fullWidth
                 />
                 <TextField
                   name="TipoCabo"
                   label="Tipo de Cabo"
                   value={formData.TipoCabo}
                   onChange={handleChange}
-                  required
-                  fullWidth
+                />
+                <TextField
+                  name="Potência"
+                  label="Potência"
+                  value={formData.Potência}
+                  onChange={handleChange}
                 />
                 <TextField
                   name="Bitola"
                   label="Bitola"
                   value={formData.Bitola}
                   onChange={handleChange}
-                  required
-                  fullWidth
                 />
+
                 <Button
                   type="submit"
                   variant="contained"
                   color="primary"
-                  disabled={loading}
+                  disabled={isSubmitting}
                 >
-                  {loading ? "Salvando..." : "Cadastrar"}
+                  {isSubmitting ? "Salvando..." : "Cadastrar Unidade"}
                 </Button>
+
+                {success && <Alert severity="success">{success}</Alert>}
+                {error && <Alert severity="error">{error}</Alert>}
               </Box>
             </form>
-
-            {success && (
-              <Alert severity="success" sx={{ mt: 2 }}>
-                {success}
-              </Alert>
-            )}
-            {error && (
-              <Alert severity="error" sx={{ mt: 2 }}>
-                {error}
-              </Alert>
-            )}
           </CardContent>
         </Card>
       </Box>
